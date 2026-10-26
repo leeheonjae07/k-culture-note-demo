@@ -1,0 +1,979 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f6f5ef" />
+  <title>K-CULTURE NOTE — 한국어 문화 맥락 노트</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f6f5ef;
+      --surface: #fffefa;
+      --surface-muted: #f0efe8;
+      --ink: #172b27;
+      --muted: #6f7973;
+      --line: #dedfd5;
+      --green: #174f43;
+      --green-deep: #103b33;
+      --green-soft: #e8f0eb;
+      --coral: #d66d51;
+      --gold: #e7b95c;
+      --shadow: 0 16px 40px rgba(28, 48, 41, .07);
+      --radius-lg: 22px;
+      --radius-md: 15px;
+      font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-width: 0;
+      background:
+        radial-gradient(ellipse at 86% 0%, rgba(231, 185, 92, .12), transparent 30rem),
+        var(--paper);
+      color: var(--ink);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+    button, textarea { font: inherit; }
+    button { color: inherit; }
+    button:focus-visible, a:focus-visible, textarea:focus-visible {
+      outline: 3px solid rgba(214, 109, 81, .5);
+      outline-offset: 3px;
+    }
+    .app-shell { min-height: 100vh; }
+
+    .sidebar {
+      position: fixed;
+      inset: 0 auto 0 0;
+      z-index: 5;
+      display: flex;
+      width: 256px;
+      flex-direction: column;
+      padding: 30px 20px 22px;
+      border-right: 1px solid rgba(23, 43, 39, .08);
+      background: rgba(255, 254, 250, .88);
+      backdrop-filter: blur(18px);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 2px 4px 48px;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .brand-mark {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      flex: 0 0 42px;
+      place-items: center;
+      border-radius: 14px 14px 14px 5px;
+      background: var(--green);
+      color: #fffefa;
+      font-family: Georgia, serif;
+      font-size: 24px;
+      font-weight: 700;
+      box-shadow: 0 5px 12px rgba(23, 79, 67, .18);
+    }
+    .brand strong { display: block; font-size: 12px; letter-spacing: .11em; }
+    .brand small { display: block; margin-top: 1px; color: var(--muted); font-size: 11px; }
+    .side-label {
+      padding: 0 12px 12px;
+      color: #99a19b;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .17em;
+    }
+    .nav-item {
+      display: flex;
+      min-height: 46px;
+      align-items: center;
+      gap: 12px;
+      margin: 3px 0;
+      padding: 0 13px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      background: transparent;
+      color: #64716b;
+      cursor: pointer;
+      text-align: left;
+      transition: background .18s ease, color .18s ease, transform .18s ease;
+    }
+    .nav-item:hover { transform: translateX(2px); background: var(--surface-muted); color: var(--ink); }
+    .nav-item.active {
+      border-color: rgba(23, 79, 67, .08);
+      background: var(--green-soft);
+      color: var(--green);
+      font-weight: 700;
+    }
+    .nav-icon { width: 22px; font-size: 18px; text-align: center; }
+    .saved-count {
+      display: grid;
+      width: 22px;
+      height: 22px;
+      margin-left: auto;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(23, 79, 67, .1);
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .sidebar-bottom { margin-top: auto; padding: 18px 11px 0; }
+    .demo-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 10px;
+      border: 1px solid #eadfbf;
+      border-radius: 999px;
+      background: #fbf4df;
+      color: #806323;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .1em;
+    }
+    .demo-pill span { width: 6px; height: 6px; border-radius: 50%; background: #c8952c; }
+    .sidebar-bottom p { margin: 10px 0 0; color: #87908a; font-size: 10px; line-height: 1.7; }
+
+    .main-content { min-height: 100vh; margin-left: 256px; padding: 0 54px; }
+    .topbar {
+      display: flex;
+      height: 76px;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(23, 43, 39, .09);
+    }
+    .breadcrumb { color: #89918c; font-size: 11px; letter-spacing: .04em; }
+    .breadcrumb span { padding: 0 8px; color: #c2c6c0; }
+    .breadcrumb strong { color: var(--ink); font-weight: 700; }
+    .top-actions { display: flex; align-items: center; gap: 12px; }
+    .demo-tag {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #efeee7;
+      color: #767d77;
+      font-size: 10px;
+    }
+    .avatar {
+      display: grid;
+      width: 32px;
+      height: 32px;
+      place-items: center;
+      border: 1px solid #d7e1d9;
+      border-radius: 50%;
+      background: #e9f0ea;
+      color: var(--green);
+      font-family: Georgia, serif;
+      font-weight: 700;
+    }
+    .mobile-brand { display: none; align-items: center; gap: 9px; }
+    .mobile-brand .brand-mark { width: 32px; height: 32px; flex-basis: 32px; border-radius: 11px 11px 11px 4px; font-size: 18px; }
+    .mobile-brand strong { font-size: 10px; letter-spacing: .08em; }
+
+    .view { display: none; max-width: 1160px; margin: 0 auto; padding: 46px 0 24px; }
+    .view.active { display: block; animation: enter .35s ease both; }
+    @keyframes enter { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    .page-heading {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 30px;
+    }
+    .eyebrow {
+      margin-bottom: 11px;
+      color: var(--coral);
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .19em;
+    }
+    h1, h2, h3, p { overflow-wrap: anywhere; }
+    h1 {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Iowan Old Style", "Batang", "Malgun Gothic", serif;
+      font-size: clamp(35px, 4.3vw, 54px);
+      font-weight: 600;
+      letter-spacing: -.055em;
+      line-height: 1.15;
+    }
+    h1 em { color: var(--green); font-weight: 500; }
+    .subheading { max-width: 600px; margin: 15px 0 0; color: var(--muted); font-size: 13px; line-height: 1.8; }
+    .heading-stamp {
+      display: flex;
+      width: 122px;
+      height: 122px;
+      flex: 0 0 122px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transform: rotate(5deg);
+      border: 1px solid #d8d7ca;
+      border-radius: 50%;
+      color: #738079;
+      font-family: Georgia, serif;
+      font-size: 12px;
+    }
+    .heading-stamp b { padding: 2px 0; color: var(--coral); font-size: 20px; }
+
+    .category-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 20px; }
+    .category-caption { margin-right: 8px; color: #707a73; font-size: 11px; font-weight: 700; }
+    .category {
+      min-height: 34px;
+      padding: 6px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 254, 250, .7);
+      color: #69746e;
+      cursor: pointer;
+      font-size: 11px;
+      transition: .18s ease;
+    }
+    .category:hover { border-color: #9cb2a3; color: var(--green); }
+    .category.active { border-color: var(--green); background: var(--green); color: #fff; box-shadow: 0 4px 10px rgba(23, 79, 67, .13); }
+
+    .translation-grid { display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); gap: 16px; }
+    .panel {
+      min-width: 0;
+      padding: 23px;
+      border: 1px solid rgba(23, 43, 39, .09);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+    .input-panel { background: #fffefa; }
+    .result-panel { background: #fdfdf8; }
+    .panel-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .panel-head > div { display: flex; align-items: center; gap: 10px; }
+    .step-number { color: #acb5ad; font-family: Georgia, serif; font-size: 11px; }
+    .panel-title { color: var(--ink); font-size: 13px; font-weight: 750; }
+    .lang-badge {
+      padding: 4px 7px;
+      border: 1px solid #e1e5de;
+      border-radius: 6px;
+      background: #f6f7f2;
+      color: #65756b;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .08em;
+    }
+    .lang-badge.chinese { border-color: #f0ddd4; background: #fbefea; color: #b45e47; }
+    textarea {
+      display: block;
+      width: 100%;
+      min-height: 144px;
+      margin-top: 18px;
+      padding: 16px;
+      resize: vertical;
+      border: 1px solid #e3e5dc;
+      border-radius: var(--radius-md);
+      background: #fbfbf7;
+      color: var(--ink);
+      font-family: "Iowan Old Style", "Batang", "Malgun Gothic", serif;
+      font-size: 22px;
+      line-height: 1.6;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    textarea::placeholder { color: #aeb5ae; }
+    textarea:focus { border-color: #84a597; box-shadow: 0 0 0 4px rgba(23, 79, 67, .08); outline: none; }
+    .input-footer { display: flex; justify-content: space-between; margin-top: 7px; color: #a0a7a0; font-size: 10px; }
+    .text-button { padding: 3px 5px; border: 0; background: none; color: #76817a; cursor: pointer; font-size: 11px; }
+    .text-button:hover { color: var(--green); text-decoration: underline; }
+    .example-label { margin: 21px 0 9px; color: #858e87; font-size: 10px; font-weight: 700; }
+    .example-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+    .example-chips button {
+      padding: 7px 10px;
+      border: 1px solid #e5e6de;
+      border-radius: 8px;
+      background: #fff;
+      color: #66726a;
+      cursor: pointer;
+      font-size: 10px;
+      transition: .18s ease;
+    }
+    .example-chips button:hover { border-color: #8eaa9a; background: #f3f7f2; color: var(--green); }
+    .primary-button, .secondary-button {
+      display: flex;
+      width: 100%;
+      min-height: 45px;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      margin-top: 20px;
+      border: 0;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 750;
+      transition: transform .18s, box-shadow .18s, background .18s;
+    }
+    .primary-button { background: var(--green); color: white; box-shadow: 0 7px 16px rgba(23, 79, 67, .17); }
+    .primary-button:hover { transform: translateY(-1px); background: var(--green-deep); box-shadow: 0 9px 20px rgba(23, 79, 67, .2); }
+    .primary-button span { font-size: 17px; }
+    .privacy-note { margin: 12px 0 0; color: #9aa19b; font-size: 9px; text-align: center; }
+    .result-text {
+      min-height: 74px;
+      margin-top: 16px;
+      padding: 14px;
+      border: 1px solid #e6e7df;
+      border-radius: 12px;
+      background: #fff;
+      color: var(--ink);
+      font-size: 17px;
+      line-height: 1.7;
+    }
+    .placeholder-text { color: #aab1aa; font-size: 12px; }
+    .result-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin: 9px 1px 0; color: #929b94; font-size: 9px; }
+    .demo-label { color: #c1785e; font-size: 8px; font-weight: 800; letter-spacing: .12em; }
+    .result-divider { height: 1px; margin: 18px 0; background: var(--line); }
+    .back-result { min-height: 65px; margin-top: 14px; background: #f8f8f2; }
+    .compare-box {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      margin-top: 13px;
+      padding: 11px 12px;
+      border: 1px solid #e8e1cb;
+      border-radius: 10px;
+      background: #faf7eb;
+      color: #77735f;
+      font-size: 10px;
+      line-height: 1.7;
+    }
+    .compare-icon { color: #b28839; font-size: 15px; }
+    .secondary-button { min-height: 39px; margin-top: 13px; border: 1px solid #d9e3db; background: #edf3ee; color: var(--green); font-size: 11px; }
+    .secondary-button:not(:disabled):hover { background: #e1ece3; }
+    button:disabled { cursor: not-allowed; opacity: .5; }
+
+    .context-section { margin-top: 46px; }
+    .section-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 15px; }
+    .section-heading .eyebrow { margin-bottom: 5px; }
+    h2 { margin: 0; font-family: "Iowan Old Style", "Batang", "Malgun Gothic", serif; font-size: 24px; font-weight: 600; letter-spacing: -.035em; }
+    .section-index { color: #9aa39c; font-family: Georgia, serif; font-size: 10px; letter-spacing: .12em; }
+    .context-card {
+      display: grid;
+      grid-template-columns: 50px 1fr;
+      gap: 14px;
+      padding: 22px 24px;
+      border: 1px solid #dce4d9;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(115deg, #edf3ec 0%, #f7f7ef 78%);
+    }
+    .context-symbol {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border-radius: 14px 14px 14px 5px;
+      background: #dce9dc;
+      color: var(--green);
+      font-size: 20px;
+    }
+    .context-kicker { color: #72877a; font-size: 9px; font-weight: 800; letter-spacing: .1em; }
+    h3 { margin: 5px 0 7px; color: var(--ink); font-family: "Iowan Old Style", "Batang", "Malgun Gothic", serif; font-size: 18px; font-weight: 600; }
+    .context-card p { max-width: 760px; margin: 0; color: #65716a; font-size: 11px; line-height: 1.8; }
+    .context-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 13px; }
+    .context-tags span { padding: 4px 8px; border: 1px solid #d9e3d7; border-radius: 999px; color: #698071; font-size: 9px; }
+    .disclaimer { margin: 9px 3px 0; color: #9aa19b; font-size: 9px; }
+
+    .simple-title { margin-top: 0; font-size: 40px; }
+    .library-toolbar, .saved-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 23px 0 18px; }
+    .compact { margin: 0; }
+    .expression-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .expression-card, .story-card, .saved-card {
+      padding: 18px;
+      border: 1px solid rgba(23, 43, 39, .09);
+      border-radius: var(--radius-md);
+      background: var(--surface);
+      box-shadow: 0 8px 22px rgba(28, 48, 41, .04);
+    }
+    .expression-card, button.expression-card { cursor: pointer; text-align: left; transition: transform .18s, border-color .18s, box-shadow .18s; }
+    .expression-card:hover { transform: translateY(-2px); border-color: #b4c8b9; box-shadow: var(--shadow); }
+    .story-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 24px; }
+    .story-card h3, .expression-card h3, .saved-card h3 { margin-top: 0; }
+    .saved-toolbar { color: var(--muted); font-size: 12px; }
+    .text-button.danger { color: #b45e47; }
+    .saved-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .app-footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 52px auto 0;
+      padding: 17px 0 22px;
+      border-top: 1px solid rgba(23, 43, 39, .09);
+      color: #9aa19b;
+      font-size: 9px;
+    }
+    .toast {
+      position: fixed;
+      z-index: 20;
+      right: 22px;
+      bottom: 22px;
+      max-width: min(360px, calc(100vw - 32px));
+      padding: 11px 15px;
+      transform: translateY(12px);
+      border-radius: 11px;
+      background: var(--ink);
+      color: #fff;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      pointer-events: none;
+      transition: .2s ease;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      clip-path: inset(50%);
+    }
+
+    @media (min-width: 1500px) {
+      .main-content { padding-right: 7vw; padding-left: 7vw; }
+      .view { max-width: 1220px; }
+    }
+    @media (max-width: 1100px) {
+      .sidebar { width: 218px; padding-right: 15px; padding-left: 15px; }
+      .main-content { margin-left: 218px; padding-right: 30px; padding-left: 30px; }
+      .translation-grid { grid-template-columns: 1fr; }
+      .heading-stamp { width: 98px; height: 98px; flex-basis: 98px; }
+    }
+    @media (max-width: 720px) {
+      .sidebar {
+        position: fixed;
+        inset: auto 0 0;
+        display: grid;
+        width: 100%;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        align-items: center;
+        height: auto;
+        padding: 7px 8px calc(7px + env(safe-area-inset-bottom));
+        box-shadow: 0 -5px 24px rgba(28, 48, 41, .08);
+        border-right: 0;
+        border-top: 1px solid var(--line);
+        background: rgba(255, 254, 250, .96);
+      }
+      .brand, .side-label, .sidebar-bottom { display: none; }
+      .sidebar::before {
+        content: none;
+      }
+      .nav-item {
+        position: relative;
+        display: flex;
+        width: 100%;
+        min-height: 52px;
+        flex-direction: column;
+        justify-content: center;
+        gap: 1px;
+        margin: 0;
+        padding: 3px 1px;
+        border-radius: 9px;
+        font-size: 9px;
+        white-space: nowrap;
+      }
+      .nav-icon { width: auto; font-size: 17px; line-height: 1.1; }
+      .saved-count {
+        position: absolute;
+        top: 3px;
+        right: calc(50% - 21px);
+        width: 15px;
+        height: 15px;
+        margin: 0;
+        border: 1px solid var(--surface);
+        font-size: 8px;
+      }
+      .main-content {
+        margin-left: 0;
+        padding: 0 17px calc(76px + env(safe-area-inset-bottom));
+      }
+      .topbar { height: 53px; }
+      .breadcrumb { display: none; }
+      .mobile-brand { display: flex; }
+      .mobile-brand strong { white-space: nowrap; }
+      .top-actions { gap: 7px; }
+      .demo-tag { padding: 5px 7px; font-size: 9px; }
+      .avatar { width: 28px; height: 28px; }
+      .view { padding-top: 31px; }
+      .page-heading { align-items: flex-start; margin-bottom: 22px; }
+      h1 { font-size: clamp(29px, 8vw, 39px); letter-spacing: -.065em; }
+      .heading-stamp { display: none; }
+      .subheading { font-size: 12px; }
+      .category-row { gap: 6px; }
+      .category-caption { width: 100%; margin-bottom: 2px; }
+      .category { min-height: 31px; padding: 5px 11px; font-size: 10px; }
+      .panel { padding: 17px; border-radius: 17px; }
+      textarea { min-height: 120px; font-size: 19px; }
+      .context-section { margin-top: 34px; }
+      .context-card { grid-template-columns: 36px 1fr; gap: 10px; padding: 17px 14px; border-radius: 17px; }
+      .context-symbol { width: 34px; height: 34px; border-radius: 11px 11px 11px 4px; font-size: 16px; }
+      h2 { font-size: 21px; }
+      h3 { font-size: 16px; }
+      .simple-title { font-size: 35px; }
+      .expression-list, .story-grid, .saved-list { grid-template-columns: 1fr; }
+      .library-toolbar { align-items: flex-start; }
+      .compact .category-caption { display: none; }
+      .app-footer { flex-direction: column; gap: 3px; margin-top: 35px; }
+    }
+    @media (max-width: 400px) {
+      .demo-tag { display: none; }
+      .mobile-brand strong { font-size: 9px; }
+      .nav-item { font-size: 9px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+
+    /* iPhone-first app canvas: stays phone-sized even when previewed on desktop. */
+    html {
+      min-height: 100%;
+      background: #e9e9e3;
+      -webkit-text-size-adjust: 100%;
+    }
+    body {
+      width: 100%;
+      min-width: 0;
+      min-height: 100vh;
+      min-height: 100svh;
+      margin: 0 auto;
+      overflow-x: hidden;
+      background: var(--paper);
+      -webkit-tap-highlight-color: transparent;
+      overscroll-behavior-y: none;
+    }
+    .app-shell {
+      width: 100%;
+      max-width: 480px;
+      min-height: 100vh;
+      min-height: 100svh;
+      margin: 0 auto;
+      overflow: clip;
+      background: var(--paper);
+      box-shadow: 0 0 50px rgba(28, 48, 41, .09);
+    }
+    .sidebar {
+      position: fixed;
+      inset: auto auto 0 50%;
+      display: grid;
+      width: min(100%, 480px);
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      align-items: center;
+      height: auto;
+      padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
+      transform: translateX(-50%);
+      border: 0;
+      border-top: 1px solid rgba(23, 43, 39, .1);
+      background: rgba(255, 254, 250, .96);
+      box-shadow: 0 -8px 24px rgba(28, 48, 41, .08);
+      backdrop-filter: blur(18px);
+    }
+    .brand, .side-label, .sidebar-bottom { display: none; }
+    .nav-item {
+      position: relative;
+      display: flex;
+      width: 100%;
+      min-width: 0;
+      min-height: 52px;
+      flex-direction: column;
+      justify-content: center;
+      gap: 2px;
+      margin: 0;
+      padding: 4px 1px;
+      border-radius: 11px;
+      font-size: 10px;
+      line-height: 1.2;
+      text-align: center;
+      white-space: nowrap;
+      touch-action: manipulation;
+    }
+    .nav-item:hover { transform: none; }
+    .nav-icon { width: auto; font-size: 18px; line-height: 1; }
+    .saved-count {
+      position: absolute;
+      top: 2px;
+      right: calc(50% - 22px);
+      width: 15px;
+      height: 15px;
+      margin: 0;
+      border: 1px solid var(--surface);
+      font-size: 8px;
+    }
+    .main-content {
+      width: 100%;
+      min-height: 100vh;
+      min-height: 100svh;
+      margin: 0;
+      padding: env(safe-area-inset-top) 18px calc(80px + env(safe-area-inset-bottom));
+    }
+    .topbar {
+      position: sticky;
+      top: env(safe-area-inset-top);
+      z-index: 4;
+      height: 54px;
+      margin: 0 -18px;
+      padding: 0 18px;
+      border-bottom-color: rgba(23, 43, 39, .07);
+      background: rgba(246, 245, 239, .92);
+      backdrop-filter: blur(16px);
+    }
+    .breadcrumb { display: none; }
+    .mobile-brand { display: flex; }
+    .mobile-brand strong { font-size: 10px; letter-spacing: .08em; white-space: nowrap; }
+    .mobile-brand .brand-mark { width: 32px; height: 32px; flex-basis: 32px; font-size: 18px; }
+    .top-actions { gap: 8px; }
+    .demo-tag { padding: 5px 8px; font-size: 9px; }
+    .avatar { width: 29px; height: 29px; }
+    .view { max-width: none; padding: 29px 0 18px; }
+    .page-heading { align-items: flex-start; gap: 0; margin-bottom: 24px; }
+    .page-heading > div:first-child { min-width: 0; }
+    .heading-stamp { display: none; }
+    h1 {
+      font-size: clamp(30px, 9vw, 39px);
+      letter-spacing: -.065em;
+      line-height: 1.22;
+      word-break: keep-all;
+    }
+    .eyebrow { margin-bottom: 9px; font-size: 8px; }
+    .subheading { max-width: none; margin-top: 13px; font-size: 13px; line-height: 1.75; word-break: keep-all; }
+    .category-row { gap: 7px; margin-bottom: 16px; }
+    .category-caption { width: 100%; margin: 0 0 2px; font-size: 11px; }
+    .category {
+      min-height: 40px;
+      padding: 7px 12px;
+      font-size: 11px;
+      touch-action: manipulation;
+    }
+    .translation-grid { grid-template-columns: minmax(0, 1fr); gap: 13px; }
+    .panel { min-width: 0; padding: 18px; border-radius: 18px; }
+    textarea {
+      min-height: 126px;
+      max-height: 34svh;
+      padding: 14px;
+      font-size: 17px;
+      line-height: 1.65;
+      resize: vertical;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    .example-chips { gap: 7px; }
+    .example-chips button { min-height: 38px; padding: 8px 10px; font-size: 11px; touch-action: manipulation; }
+    .primary-button { min-height: 48px; touch-action: manipulation; }
+    .secondary-button { min-height: 44px; touch-action: manipulation; }
+    .result-text { min-height: 68px; font-size: 16px; overflow-wrap: anywhere; }
+    .context-section { margin-top: 34px; }
+    .section-heading { align-items: flex-end; gap: 8px; }
+    h2 { font-size: 22px; }
+    h3 { font-size: 17px; line-height: 1.4; }
+    .context-card { grid-template-columns: 34px minmax(0, 1fr); gap: 10px; padding: 17px 14px; border-radius: 18px; }
+    .context-symbol { width: 32px; height: 32px; font-size: 16px; }
+    .context-card p { font-size: 12px; line-height: 1.75; }
+    .context-tags span { min-height: 27px; padding: 4px 9px; }
+    .simple-title { font-size: 36px; }
+    .library-toolbar, .saved-toolbar { align-items: flex-start; flex-direction: column; }
+    .compact { flex-direction: row; flex-wrap: wrap; }
+    .compact .category-caption { display: none; }
+    .expression-list, .story-grid, .saved-list { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+    .expression-card, .story-card, .saved-card { padding: 17px; }
+    .app-footer { flex-direction: column; gap: 3px; margin-top: 33px; }
+    .toast {
+      right: 14px;
+      bottom: calc(76px + env(safe-area-inset-bottom));
+      left: 14px;
+      max-width: 440px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    button, a { touch-action: manipulation; }
+    @media (min-width: 600px) {
+      .app-shell { border-right: 1px solid rgba(23, 43, 39, .06); border-left: 1px solid rgba(23, 43, 39, .06); }
+    }
+    @media (max-width: 360px) {
+      .main-content { padding-right: 14px; padding-left: 14px; }
+      .topbar { margin-right: -14px; margin-left: -14px; padding-right: 14px; padding-left: 14px; }
+      .demo-tag { display: none; }
+      .category { padding-right: 10px; padding-left: 10px; }
+      .panel { padding: 15px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="K-CULTURE NOTE 홈">
+        <span class="brand-mark">K</span>
+        <span><strong>K-CULTURE NOTE</strong><small>언어 너머의 맥락</small></span>
+      </a>
+      <div class="side-label">LEARN</div>
+      <button class="nav-item active" data-view="translate"><span class="nav-icon">↔</span> 맥락 번역</button>
+      <button class="nav-item" data-view="explore"><span class="nav-icon">▦</span> 표현 도감</button>
+      <button class="nav-item" data-view="stories"><span class="nav-icon">▤</span> 문화 스토리</button>
+      <button class="nav-item" data-view="saved"><span class="nav-icon">♡</span> 내 노트 <span class="saved-count" id="savedCount">0</span></button>
+      <div class="sidebar-bottom">
+        <div class="demo-pill"><span></span> DEMO MODE</div>
+        <p>현재 번역은 시연용 예시 데이터입니다. 실제 번역 API는 연결되어 있지 않습니다.</p>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="mobile-brand"><span class="brand-mark">K</span><strong>K-CULTURE NOTE</strong></div>
+        <div class="breadcrumb">K-CULTURE NOTE <span>/</span> <strong id="pageCrumb">맥락 번역</strong></div>
+        <div class="top-actions"><span class="demo-tag">시연용 데이터</span><div class="avatar">K</div></div>
+      </header>
+
+      <section class="view active" id="view-translate">
+        <div class="page-heading">
+          <div><div class="eyebrow">TRANSLATE WITH CONTEXT</div><h1>뜻만 옮기지 말고,<br/><em>맥락까지 이해하기.</em></h1>
+            <p class="subheading">한국어 표현을 중국어로 옮기고, 역번역으로 의미와 말투가 어떻게 달라지는지 확인해 보세요.</p></div>
+          <div class="heading-stamp"><span>한국어</span><b>↔</b><span>中文</span></div>
+        </div>
+
+        <div class="category-row" role="group" aria-label="상황 선택">
+          <span class="category-caption">어떤 상황인가요?</span>
+          <button class="category active" data-category="일상">일상</button>
+          <button class="category" data-category="학업">학업</button>
+          <button class="category" data-category="인간관계">인간관계</button>
+          <button class="category" data-category="사회생활">사회생활</button>
+        </div>
+
+        <div class="translation-grid">
+          <article class="panel input-panel">
+            <div class="panel-head"><div><span class="step-number">01</span><span class="panel-title">한국어 원문</span></div><span class="lang-badge">KO</span></div>
+            <label for="sourceText" class="sr-only">번역할 한국어 문장</label>
+            <textarea id="sourceText" maxlength="300" placeholder="예: 밥 한번 먹자">밥 한번 먹자</textarea>
+            <div class="input-footer"><span id="charCount">6 / 300</span><button class="text-button" id="clearInput">지우기</button></div>
+            <div class="example-label">예시 문장</div>
+            <div class="example-chips">
+              <button data-example="밥 한번 먹자">밥 한번 먹자</button>
+              <button data-example="수고했어요">수고했어요</button>
+              <button data-example="눈치가 빠르네요">눈치가 빠르네요</button>
+            </div>
+            <button class="primary-button" id="translateBtn">맥락 번역하기 <span>→</span></button>
+            <p class="privacy-note">⌑ 입력 문장은 이 브라우저에서만 처리되는 시연용 예시와 비교됩니다.</p>
+          </article>
+
+          <article class="panel result-panel">
+            <div class="panel-head"><div><span class="step-number">02</span><span class="panel-title">중국어 번역</span></div><span class="lang-badge chinese">ZH</span></div>
+            <div class="result-text" id="chineseResult"><span class="placeholder-text">문장을 입력하고 번역을 시작하세요.</span></div>
+            <div class="result-meta"><span class="demo-label">DEMO RESULT</span><span id="translationType">예시 결과 대기 중</span></div>
+            <div class="result-divider"></div>
+            <div class="panel-head back-head"><div><span class="step-number">03</span><span class="panel-title">한국어 역번역</span></div><span class="lang-badge">KO</span></div>
+            <div class="result-text back-result" id="backResult"><span class="placeholder-text">역번역 결과가 여기에 표시됩니다.</span></div>
+            <div class="compare-box" id="compareBox"><span class="compare-icon">↔</span><span>번역을 실행하면 원문과 역번역의 차이를 비교합니다.</span></div>
+            <button class="secondary-button" id="saveBtn" disabled>♡ 내 노트에 저장</button>
+          </article>
+        </div>
+
+        <section class="context-section" id="contextSection">
+          <div class="section-heading"><div><div class="eyebrow">CULTURAL CONTEXT</div><h2>표현 속 문화 읽기</h2></div><span class="section-index">NOTE 01</span></div>
+          <div class="context-card">
+            <div class="context-symbol">✳</div>
+            <div><div class="context-kicker" id="contextCategory">문화 맥락 · 표현 안내</div><h3 id="contextTitle">말의 표면과 실제 의도는 다를 수 있어요.</h3><p id="contextBody">한국어 표현은 말한 상황, 관계, 말투에 따라 실제 의도가 달라질 수 있습니다. 번역 결과만으로 의도를 확정하지 말고 대화 맥락을 함께 살펴보세요.</p><div class="context-tags" id="contextTags"><span>말투</span><span>상황</span><span>관계</span></div></div>
+          </div>
+          <p class="disclaimer">문화 설명은 학습을 위한 일반적 안내입니다. 개인의 의도나 모든 상황을 단정하지 않습니다.</p>
+        </section>
+      </section>
+
+      <section class="view" id="view-explore">
+        <div class="eyebrow">EXPRESSION LIBRARY</div><h1 class="simple-title">표현 도감</h1><p class="subheading">상황별 한국어 표현을 살펴보고, 눌러서 번역 화면에서 확인하세요.</p>
+        <div class="library-toolbar"><div class="category-row compact"><button class="category active" data-filter="전체">전체</button><button class="category" data-filter="일상">일상</button><button class="category" data-filter="학업">학업</button><button class="category" data-filter="인간관계">인간관계</button><button class="category" data-filter="사회생활">사회생활</button></div></div>
+        <div class="expression-list" id="expressionList"></div>
+      </section>
+
+      <section class="view" id="view-stories">
+        <div class="eyebrow">CULTURE STORIES</div><h1 class="simple-title">문화 스토리</h1><p class="subheading">한국어 표현을 이해할 때 도움이 되는 짧은 문화 메모입니다.</p>
+        <div class="story-grid" id="storyGrid"></div>
+      </section>
+
+      <section class="view" id="view-saved">
+        <div class="eyebrow">YOUR LEARNING NOTES</div><h1 class="simple-title">내 노트</h1><p class="subheading">저장한 표현과 번역 비교를 이 브라우저에 보관합니다.</p>
+        <div class="saved-toolbar"><span id="savedSummary">저장한 표현 0개</span><button class="text-button danger" id="clearSaved">전체 삭제</button></div>
+        <div class="saved-list" id="savedList"></div>
+      </section>
+
+      <footer class="app-footer"><span>© K-CULTURE NOTE · Prototype</span><span>언어 학습을 위한 시연용 웹 앱</span></footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script>
+    (() => {
+      const $ = (selector, root = document) => root.querySelector(selector);
+      const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+      const input = $("#sourceText");
+      const savedKey = "kculture-note-saved";
+      let currentCategory = "일상";
+      let currentResult = null;
+      let toastTimer;
+      const demos = {
+        "밥 한번 먹자": {
+          zh: "有空一起吃个饭吧。",
+          back: "시간 될 때 같이 밥 먹자.",
+          type: "친근한 제안 · 상황에 따라 인사말일 수 있어요.",
+          compare: "‘한번’은 실제 약속을 정하기보다 가볍게 만남을 제안하는 말일 수 있어요."
+        },
+        "수고했어요": {
+          zh: "辛苦了。",
+          back: "고생 많았어요.",
+          type: "노고를 인정하는 표현",
+          compare: "상대의 노력에 감사를 전하는 말이에요. 관계와 상황에 따라 격식은 달라질 수 있어요."
+        },
+        "눈치가 빠르네요": {
+          zh: "你很会察言观色呢。",
+          back: "상황을 잘 파악하시네요.",
+          type: "칭찬 또는 가벼운 평가",
+          compare: "대체로 상황 파악이 빠르다는 뜻이지만 말투에 따라 칭찬이나 장난으로 들릴 수 있어요."
+        }
+      };
+      const stories = [
+        ["밥 한번 먹자", "식사 제안이면서 안부 인사처럼 쓰이기도 해요."],
+        ["수고했어요", "상대의 노력과 수고를 알아주는 표현이에요."],
+        ["눈치", "말로 직접 표현되지 않은 상황이나 분위기를 알아차리는 감각을 뜻해요."]
+      ];
+
+      function showToast(message) {
+        const toast = $("#toast");
+        toast.textContent = message;
+        toast.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove("show"), 2200);
+      }
+
+      function savedNotes() {
+        try {
+          return JSON.parse(localStorage.getItem(savedKey) || "[]");
+        } catch {
+          return [];
+        }
+      }
+
+      function renderSaved() {
+        const notes = savedNotes();
+        $("#savedCount").textContent = notes.length;
+        $("#savedSummary").textContent = `저장한 표현 ${notes.length}개`;
+        $("#savedList").innerHTML = notes.length
+          ? notes.map((note, index) => `<article class="saved-card"><div class="context-kicker">${note.category}</div><h3>${escapeHtml(note.source)}</h3><p>${escapeHtml(note.zh)}</p><p>${escapeHtml(note.back)}</p><button class="text-button danger" data-remove="${index}">삭제</button></article>`).join("")
+          : '<p class="placeholder-text">아직 저장한 표현이 없어요. 번역 결과를 노트에 저장해 보세요.</p>';
+      }
+
+      function escapeHtml(value) {
+        return String(value).replace(/[&<>"']/g, character => ({
+          "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+        })[character]);
+      }
+
+      function renderLibrary(filter = "전체") {
+        const entries = Object.entries(demos).filter(([phrase]) => {
+          if (filter === "전체") return true;
+          const category = phrase === "눈치가 빠르네요" ? "인간관계" : "일상";
+          return category === filter;
+        });
+        $("#expressionList").innerHTML = entries.map(([phrase, data]) =>
+          `<button class="expression-card" data-pick="${escapeHtml(phrase)}"><div class="context-kicker">${phrase === "눈치가 빠르네요" ? "인간관계" : "일상"}</div><h3>${escapeHtml(phrase)}</h3><p>${escapeHtml(data.type)}</p></button>`
+        ).join("") || '<p class="placeholder-text">이 상황에 등록된 표현이 아직 없어요.</p>';
+      }
+
+      function renderStories() {
+        $("#storyGrid").innerHTML = stories.map(([title, body], index) =>
+          `<article class="story-card"><div class="context-kicker">CULTURE NOTE 0${index + 1}</div><h3>${escapeHtml(title)}</h3><p>${escapeHtml(body)}</p></article>`
+        ).join("");
+      }
+
+      function translate() {
+        const phrase = input.value.trim();
+        if (!phrase) {
+          showToast("번역할 문장을 입력해 주세요.");
+          input.focus();
+          return;
+        }
+        const result = demos[phrase] || {
+          zh: "이 문장은 시연 데이터에 등록되어 있지 않아요.",
+          back: "다른 예시 문장을 선택해 확인해 주세요.",
+          type: "시연용 예시 결과",
+          compare: "현재 연결된 번역 API가 없어 등록된 예시 문장만 비교할 수 있어요."
+        };
+        currentResult = { source: phrase, ...result, category: currentCategory };
+        $("#chineseResult").textContent = result.zh;
+        $("#backResult").textContent = result.back;
+        $("#translationType").textContent = result.type;
+        $("#compareBox").innerHTML = `<span class="compare-icon">↔</span><span>${escapeHtml(result.compare)}</span>`;
+        $("#saveBtn").disabled = false;
+      }
+
+      function openView(name) {
+        $$(".view").forEach(view => view.classList.toggle("active", view.id === `view-${name}`));
+        $$(".nav-item").forEach(button => button.classList.toggle("active", button.dataset.view === name));
+        $("#pageCrumb").textContent = ({ translate: "맥락 번역", explore: "표현 도감", stories: "문화 스토리", saved: "내 노트" })[name];
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      $$(".nav-item").forEach(button => button.addEventListener("click", () => openView(button.dataset.view)));
+      $$(".category[data-category]").forEach(button => button.addEventListener("click", () => {
+        currentCategory = button.dataset.category;
+        $$(".category[data-category]").forEach(item => item.classList.toggle("active", item === button));
+        $("#contextCategory").textContent = `문화 맥락 · ${currentCategory}`;
+      }));
+      $$(".category[data-filter]").forEach(button => button.addEventListener("click", () => {
+        $$(".category[data-filter]").forEach(item => item.classList.toggle("active", item === button));
+        renderLibrary(button.dataset.filter);
+      }));
+      $$(".example-chips button").forEach(button => button.addEventListener("click", () => {
+        input.value = button.dataset.example;
+        input.dispatchEvent(new Event("input"));
+        input.focus();
+      }));
+      input.addEventListener("input", () => { $("#charCount").textContent = `${input.value.length} / 300`; });
+      $("#clearInput").addEventListener("click", () => {
+        input.value = "";
+        input.dispatchEvent(new Event("input"));
+        input.focus();
+      });
+      $("#translateBtn").addEventListener("click", translate);
+      $("#saveBtn").addEventListener("click", () => {
+        if (!currentResult) return;
+        const notes = savedNotes();
+        if (notes.some(note => note.source === currentResult.source)) {
+          showToast("이미 내 노트에 저장된 표현이에요.");
+          return;
+        }
+        notes.unshift(currentResult);
+        localStorage.setItem(savedKey, JSON.stringify(notes));
+        renderSaved();
+        showToast("내 노트에 저장했어요.");
+      });
+      $("#savedList").addEventListener("click", event => {
+        const button = event.target.closest("[data-remove]");
+        if (!button) return;
+        const notes = savedNotes();
+        notes.splice(Number(button.dataset.remove), 1);
+        localStorage.setItem(savedKey, JSON.stringify(notes));
+        renderSaved();
+      });
+      $("#clearSaved").addEventListener("click", () => {
+        if (!savedNotes().length) return;
+        localStorage.removeItem(savedKey);
+        renderSaved();
+        showToast("저장한 노트를 모두 삭제했어요.");
+      });
+      $("#expressionList").addEventListener("click", event => {
+        const button = event.target.closest("[data-pick]");
+        if (!button) return;
+        input.value = button.dataset.pick;
+        input.dispatchEvent(new Event("input"));
+        openView("translate");
+        input.focus();
+      });
+
+      renderSaved();
+      renderLibrary();
+      renderStories();
+      input.dispatchEvent(new Event("input"));
+    })();
+  </script>
+</body>
+</html>

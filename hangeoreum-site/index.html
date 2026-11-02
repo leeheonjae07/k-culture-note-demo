@@ -149,6 +149,18 @@
     .fare-row { display: flex; justify-content: space-between; gap: 10px; padding: 11px 0; border-bottom: 1px solid var(--line); font-size: 12px; }
     .fare-row:last-child { border-bottom: 0; }
     .fare-row.total { padding-top: 14px; color: var(--ink); font-size: 14px; font-weight: 900; }
+    .payment-methods { display: grid; gap: 9px; margin-top: 14px; }
+    .payment-method { width: 100%; padding: 13px; display: flex; align-items: center; gap: 11px; border: 1px solid var(--line); border-radius: 14px; background: white; text-align: left; }
+    .payment-method.active { border: 2px solid var(--blue); background: #f5f9ff; }
+    .payment-icon { width: 38px; height: 38px; flex: 0 0 38px; display: grid; place-items: center; border-radius: 12px; background: var(--blue-soft); font-size: 19px; }
+    .payment-method strong { display: block; font-size: 12px; }
+    .payment-method small { display: block; margin-top: 4px; color: var(--muted); font-size: 10px; }
+    .check-row { display: flex; align-items: flex-start; gap: 9px; margin-top: 13px; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: #fafbfd; font-size: 11px; line-height: 1.5; }
+    .check-row input { width: 18px; height: 18px; flex: 0 0 18px; margin: 0; accent-color: var(--blue); }
+    .demo-code { margin-top: 14px; padding: 15px; border: 1px dashed #afc8ed; border-radius: 14px; background: #f5f9ff; text-align: center; }
+    .demo-code small { display: block; color: var(--muted); font-size: 10px; }
+    .demo-code strong { display: block; margin-top: 6px; color: var(--blue-dark); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 23px; letter-spacing: 5px; }
+    .security-note { padding: 12px; border-radius: 12px; background: #fff7ed; color: #84501c; font-size: 10px; line-height: 1.55; }
     .success-mark { width: 60px; height: 60px; margin: 0 auto 13px; display: grid; place-items: center; border-radius: 50%; color: white; background: var(--green); font-size: 30px; }
     .success-card { padding: 25px 17px; text-align: center; }
     .success-card h2 { margin-bottom: 7px; }
@@ -209,7 +221,7 @@
   <div class="app">
     <header class="topbar">
       <div class="brand"><span class="brand-mark" aria-hidden="true">S</span>SMART RESERVE</div>
-      <span class="demo-pill">가상 데이터 · 결제 없음</span>
+      <span class="demo-pill">결제 연습 · 실제 청구 없음</span>
     </header>
     <main>
       <div id="storageWarning"></div>
@@ -261,6 +273,7 @@
       schedule: null,
       seatClass: "standard",
       seats: [],
+      payment: { method: "card", consent: false },
       taxi: { from: "", to: "", vehicle: "standard" },
       storageWarning: ""
     };
@@ -358,7 +371,7 @@
           <div class="guide-step"><b>1</b><strong>이동수단 선택</strong><small>기차·버스·택시 중 골라요</small></div>
           <div class="guide-step"><b>2</b><strong>경로와 날짜 입력</strong><small>출발지와 도착지를 찾아요</small></div>
           <div class="guide-step"><b>3</b><strong>좌석 고르기</strong><small>인원수만큼 좌석을 눌러요</small></div>
-          <div class="guide-step"><b>4</b><strong>내용 확인하기</strong><small>가상 예약으로 마무리해요</small></div>
+          <div class="guide-step"><b>4</b><strong>결제 연습하기</strong><small>테스트 인증으로 마무리해요</small></div>
         </div></aside>
         <div class="section-heading"><h2>빠른 기차 검색</h2><button data-nav="train">더 보기</button></div>
         ${searchForm("train", true)}
@@ -423,14 +436,42 @@
         $("#searchPage").innerHTML = `<div class="back-row"><button class="back" data-action="edit-seats" aria-label="좌석 선택">←</button><div><h1>예약 정보 확인</h1><p>내용을 확인하고 가상 예약을 진행해 주세요.</p></div></div>
           <div class="card"><div class="summary-route"><div><strong>${escapeHtml(state.draft.from)}</strong><small>${escapeHtml(formatDate(state.draft.date))} · ${escapeHtml(schedule.depart)}</small></div><span>→</span><div style="text-align:right"><strong>${escapeHtml(state.draft.to)}</strong><small>${escapeHtml(schedule.arrive)} 도착</small></div></div>
           <div class="fare-row"><span>교통편</span><strong>${escapeHtml(schedule.name)} · ${escapeHtml(schedule.badge)}</strong></div><div class="fare-row"><span>좌석 등급 / 인원</span><strong>${state.draft.type === "bus" ? escapeHtml(schedule.badge) : state.seatClass === "premium" ? "특실" : "일반실"} · ${state.seats.length}명</strong></div><div class="fare-row"><span>선택 좌석</span><strong>${escapeHtml(state.seats.join(", "))}</strong></div><div class="fare-row total"><span>가상 운임 합계</span><strong>${won(unit * state.seats.length)}</strong></div></div>
-          <div class="notice">시연용 가상 예약입니다. 실제 좌석은 확보되지 않으며 운임이 결제되지 않습니다.</div>
-          <button class="primary wide" data-action="confirm-reservation">가상 예약 완료</button><button class="outline wide" data-action="edit-seats">좌석 다시 선택</button>`;
+          <div class="notice">다음 단계에서 결제 방법과 인증 절차를 연습합니다. 가상 결제이며 실제 좌석 확보나 금전 청구는 없습니다.</div>
+          <button class="primary wide" data-action="start-payment">결제 방법 선택하기</button><button class="outline wide" data-action="edit-seats">좌석 다시 선택</button>`;
+        return;
+      }
+      if (state.stage === "payment") {
+        const total = reservationTotal();
+        const methods = [
+          { id: "card", icon: "💳", title: "카드 결제 연습", detail: "테스트 카드로 인증 흐름 체험" },
+          { id: "easy", icon: "📱", title: "간편결제 연습", detail: "간편결제 확인 흐름 체험" },
+          { id: "transfer", icon: "🏦", title: "가상 계좌이체 연습", detail: "이체 확인 흐름 체험" }
+        ];
+        $("#searchPage").innerHTML = `<div class="back-row"><button class="back" data-action="back-to-confirm" aria-label="예약 정보">←</button><div><h1>결제 방법 연습</h1><p>원하는 결제 방법을 선택해 보세요.</p></div></div>
+          <div class="card"><div class="eyebrow">결제 연습 금액</div><div class="fare-row total"><span>가상 운임 합계</span><strong>${won(total)}</strong></div></div>
+          <div class="payment-methods">${methods.map(item => `<button class="payment-method${state.payment.method === item.id ? " active" : ""}" data-action="payment-method" data-method="${item.id}" aria-pressed="${state.payment.method === item.id}"><span class="payment-icon">${item.icon}</span><span><strong>${item.title}</strong><small>${item.detail}</small></span></button>`).join("")}</div>
+          <div class="security-note" style="margin-top:13px">안전한 체험을 위해 실제 카드번호·계좌번호·비밀번호를 입력하지 않습니다. 이 화면은 결제사와 연결되지 않으며 결제 정보도 저장하지 않습니다.</div>
+          <label class="check-row"><input id="paymentConsent" type="checkbox" ${state.payment.consent ? "checked" : ""}><span>실제 결제가 아닌 교육용 가상 결제임을 확인했습니다.</span></label>
+          <button class="primary wide" data-action="begin-payment-auth">가상 결제 인증 시작</button><button class="outline wide" data-action="back-to-confirm">예약 정보로 돌아가기</button>`;
+        return;
+      }
+      if (state.stage === "payment-auth") {
+        const total = reservationTotal();
+        const methodName = paymentMethodName(state.payment.method);
+        $("#searchPage").innerHTML = `<div class="back-row"><button class="back" data-action="back-to-payment" aria-label="결제 방법">←</button><div><h1>결제 인증 연습</h1><p>${methodName} · 인증번호를 입력해 주세요.</p></div></div>
+          <div class="card"><div class="fare-row"><span>선택한 방법</span><strong>${methodName}</strong></div><div class="fare-row total"><span>연습 금액</span><strong>${won(total)}</strong></div></div>
+          <div class="demo-code"><small>시연용 인증번호 · 실제 문자 발송 없음</small><strong>246810</strong></div>
+          <div class="field"><label for="demoPaymentCode">위에 표시된 인증번호 6자리</label><input id="demoPaymentCode" inputmode="numeric" autocomplete="off" maxlength="6" placeholder="예: 246810" aria-describedby="paymentCodeHelp"></div>
+          <p id="paymentCodeHelp" class="demo-caption">화면에 표시된 번호를 입력하면 가상 승인 결과를 확인할 수 있어요.</p>
+          <div class="notice warning">연습 전용 단계입니다. 실제 결제 승인이나 카드사 인증은 발생하지 않습니다.</div>
+          <button class="primary wide" data-action="approve-demo-payment">가상 결제 승인 체험</button><button class="outline wide" data-action="back-to-payment">결제 방법 변경</button><button class="outline wide" data-action="cancel-payment-practice">연습 취소</button>`;
+        return;
       }
       if (state.stage === "done") {
         const item = state.lastBooking;
         $("#searchPage").innerHTML = `<div class="back-row"><button class="back" data-nav="home" aria-label="홈으로">←</button><div><h1>예약 체험 완료</h1><p>이용 흐름이 정상적으로 완료되었습니다.</p></div></div>
-          <div class="card success-card"><div class="success-mark">✓</div><h2>가상 예약이 완료됐어요</h2><p class="muted">실제 예약·발권 또는 결제는 발생하지 않았습니다.</p><div class="ticket-code">${escapeHtml(item.id)}</div></div>
-          <div class="card" style="margin-top:12px"><div class="booking-route">${serviceIcon(item.type)} ${escapeHtml(item.from)} → ${escapeHtml(item.to)}</div><div class="booking-meta">${escapeHtml(formatDate(item.date))} · ${escapeHtml(item.time)}<br>${escapeHtml(item.schedule)} · 좌석 ${escapeHtml(item.seats.join(", "))}<br>${item.passengers}명 · ${won(item.total)}</div></div>
+          <div class="card success-card"><div class="success-mark">✓</div><h2>결제 연습이 완료됐어요</h2><p class="muted">가상 승인 체험입니다. 실제 예약·발권 또는 금전 청구는 발생하지 않았습니다.</p><div class="ticket-code">${escapeHtml(item.id)}</div></div>
+          <div class="card" style="margin-top:12px"><div class="booking-route">${serviceIcon(item.type)} ${escapeHtml(item.from)} → ${escapeHtml(item.to)}</div><div class="booking-meta">${escapeHtml(formatDate(item.date))} · ${escapeHtml(item.time)}<br>${escapeHtml(item.schedule)} · 좌석 ${escapeHtml(item.seats.join(", "))}<br>${item.passengers}명 · ${won(item.total)}<br>결제 연습: ${escapeHtml(paymentMethodName(item.paymentMethod))} · 가상 승인</div></div>
           <button class="primary wide" data-nav="bookings">예약 내역 확인</button><button class="outline wide" data-nav="home">홈으로</button>`;
       }
     }
@@ -460,9 +501,9 @@
     function renderBookings() {
       const items = [...state.bookings].reverse();
       $("#bookingsPage").innerHTML = `<div class="back-row"><div><h1>예약 내역</h1><p>기차·버스 예약과 택시 호출 기록</p></div></div>
-        ${items.length ? `<div class="booking-list">${items.map((item, index) => `<article class="booking-card${item.status === "cancelled" ? " cancelled" : ""}"><div class="booking-head"><strong>${serviceIcon(item.type)} ${escapeHtml(serviceName(item.type))} ${item.type === "taxi" ? "호출" : "예약"}</strong><span class="status${item.status === "cancelled" ? " cancelled" : ""}">${item.status === "cancelled" ? "취소됨 · 시뮬레이션" : "가상 예약"}</span></div>
+        ${items.length ? `<div class="booking-list">        ${items.map((item, index) => `<article class="booking-card${item.status === "cancelled" ? " cancelled" : ""}"><div class="booking-head"><strong>${serviceIcon(item.type)} ${escapeHtml(serviceName(item.type))} ${item.type === "taxi" ? "호출" : "예약"}</strong><span class="status${item.status === "cancelled" ? " cancelled" : ""}">${item.status === "cancelled" ? "취소됨 · 시뮬레이션" : item.type === "taxi" ? "호출 시뮬레이션" : "결제 연습 완료"}</span></div>
           <div class="booking-route">${escapeHtml(item.from)} <span class="arrow">→</span> ${escapeHtml(item.to)}</div>
-          <div class="booking-meta">${escapeHtml(formatDate(item.date))} · ${escapeHtml(item.time || "호출 기록")}<br>${escapeHtml(item.schedule || item.vehicleName || "택시 호출")} · ${item.passengers || 1}명${item.seats && item.seats.length ? ` · 좌석 ${escapeHtml(item.seats.join(", "))}` : ""}<br>${won(item.total)} · ${escapeHtml(item.id)}</div>
+          <div class="booking-meta">${escapeHtml(formatDate(item.date))} · ${escapeHtml(item.time || "호출 기록")}<br>${escapeHtml(item.schedule || item.vehicleName || "택시 호출")} · ${item.passengers || 1}명${item.seats && item.seats.length ? ` · 좌석 ${escapeHtml(item.seats.join(", "))}` : ""}<br>${won(item.total)}${item.paymentMethod ? ` · ${escapeHtml(paymentMethodName(item.paymentMethod))} (가상)` : ""} · ${escapeHtml(item.id)}</div>
           ${item.status !== "cancelled" ? `<div class="booking-actions"><button class="danger" data-action="cancel-booking" data-index="${state.bookings.length - 1 - index}">가상 예약 취소</button></div>` : ""}</article>`).join("")}</div>` : `<div class="card empty">아직 예약 내역이 없어요.<br>기차나 버스 좌석을 골라 예약 체험을 시작해 보세요.<br><button class="primary" style="margin-top:15px" data-nav="train">기차 검색</button></div>`}
         <div class="notice">내역은 이 브라우저에만 저장되는 시연 데이터입니다. 취소해도 실제 예약에는 영향이 없습니다.</div>`;
     }
@@ -520,10 +561,20 @@
     function bookingRecord(type, from, to, date, time, schedule, seats, passengers, total, vehicleName = "") {
       return { id: `SR-${Date.now().toString(36).toUpperCase()}`, type, from, to, date, time, schedule, seats, passengers, total, vehicleName, status: "confirmed", createdAt: new Date().toISOString() };
     }
-    function completeReservation() {
-      if (!state.schedule || state.seats.length !== state.draft.passengers) { toast("인원수만큼 좌석을 먼저 선택해 주세요."); return; }
+    function reservationTotal() {
+      if (!state.schedule) return 0;
       const unit = state.draft.type === "bus" ? state.schedule.fare : state.seatClass === "premium" ? state.schedule.premium : state.schedule.fare;
-      const record = bookingRecord(state.draft.type, state.draft.from, state.draft.to, state.draft.date, state.schedule.depart, `${state.schedule.name} · ${state.draft.type === "train" ? state.seatClass === "premium" ? "특실" : "일반실" : state.schedule.badge}`, [...state.seats], state.draft.passengers, unit * state.seats.length);
+      return unit * state.seats.length;
+    }
+    function paymentMethodName(method) {
+      return ({ card: "카드 결제 연습", easy: "간편결제 연습", transfer: "가상 계좌이체 연습" })[method] || "가상 결제 연습";
+    }
+    function completeReservation() {
+      if (state.stage !== "payment-auth" || !state.payment.consent) { toast("결제 연습 동의 후 인증을 진행해 주세요."); return; }
+      if (!state.schedule || state.seats.length !== state.draft.passengers) { toast("인원수만큼 좌석을 먼저 선택해 주세요."); return; }
+      const record = bookingRecord(state.draft.type, state.draft.from, state.draft.to, state.draft.date, state.schedule.depart, `${state.schedule.name} · ${state.draft.type === "train" ? state.seatClass === "premium" ? "특실" : "일반실" : state.schedule.badge}`, [...state.seats], state.draft.passengers, reservationTotal());
+      record.paymentMethod = state.payment.method;
+      record.paymentStatus = "simulation-approved";
       state.bookings.push(record);
       state.lastBooking = record;
       state.stage = "done";
@@ -535,6 +586,7 @@
       state.draft.type = type;
       state.stage = "form";
       state.seats = [];
+      state.payment = { method: "card", consent: false };
       showPage("search");
     }
     function adjustPassengers(delta) {
@@ -615,7 +667,31 @@
       } else if (action === "edit-seats") {
         state.stage = "seats";
         renderSearch();
-      } else if (action === "confirm-reservation") {
+      } else if (action === "start-payment") {
+        state.payment = { method: state.payment.method || "card", consent: false };
+        state.stage = "payment";
+        renderSearch();
+      } else if (action === "payment-method") {
+        state.payment.method = button.dataset.method;
+        renderSearch();
+      } else if (action === "begin-payment-auth") {
+        if (!state.payment.consent) { toast("가상 결제 연습 안내를 확인해 주세요."); return; }
+        state.stage = "payment-auth";
+        renderSearch();
+      } else if (action === "back-to-confirm") {
+        state.stage = "confirm";
+        renderSearch();
+      } else if (action === "back-to-payment") {
+        state.stage = "payment";
+        renderSearch();
+      } else if (action === "cancel-payment-practice") {
+        state.stage = "seats";
+        state.payment = { method: "card", consent: false };
+        renderSearch();
+        toast("결제 연습을 취소했습니다. 예약은 저장되지 않았어요.");
+      } else if (action === "approve-demo-payment") {
+        const code = $("#demoPaymentCode")?.value.trim();
+        if (code !== "246810") { toast("화면에 표시된 연습용 인증번호 246810을 입력해 주세요."); return; }
         completeReservation();
       } else if (action === "taxi-vehicle") {
         state.taxi.vehicle = button.dataset.vehicle;
@@ -688,6 +764,9 @@
       if (event.target.id === "homeFrom" || event.target.id === "searchFrom") state.draft.from = event.target.value;
       if (event.target.id === "homeTo" || event.target.id === "searchTo") state.draft.to = event.target.value;
       if (event.target.id === "homeDate" || event.target.id === "searchDate") state.draft.date = event.target.value;
+    });
+    document.addEventListener("change", event => {
+      if (event.target.id === "paymentConsent") state.payment.consent = event.target.checked;
     });
     readStoredState();
     $("#stationOptions").innerHTML = stations.map(item => `<option value="${escapeHtml(item)}"></option>`).join("");

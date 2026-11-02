@@ -1,94 +1,697 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#1769e8">
-<meta name="description" content="큰 버튼과 쉬운 안내로 식당 키오스크와 교통 발권을 연습하고, 예약 과정을 미리 체험해 보세요.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="한걸음 | 쉬운 예약과 키오스크 연습">
-<meta property="og:description" content="누구나 쉽게, 한 단계씩 이용하는 예약·키오스크 연습 화면">
-<meta name="color-scheme" content="light">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%231769e8'/%3E%3Ctext x='32' y='45' text-anchor='middle' font-size='42' fill='white'%3E%ED%95%9C%3C/text%3E%3C/svg%3E">
-<title>한걸음 | 쉬운 예약과 키오스크 연습</title>
-<style>
-:root{--blue:#1769e8;--navy:#102b52;--ink:#172235;--muted:#64748b;--line:#e5eaf1;--bg:#f4f7fb;--green:#16834a;--orange:#d86b16;--shadow:0 14px 40px rgba(25,55,95,.10)}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Noto Sans KR",sans-serif;font-size:17px}button,input,select{font:inherit}button{cursor:pointer;border:0}button:focus-visible,input:focus-visible,select:focus-visible{outline:4px solid #ffbf47;outline-offset:3px}
-header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}.top{max-width:1120px;margin:auto;padding:15px 22px;display:flex;align-items:center;justify-content:space-between;gap:14px}.brand{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:900;color:var(--navy)}.logo{width:40px;height:40px;border-radius:14px;background:var(--blue);color:white;display:grid;place-items:center;font-weight:900}.top small{color:var(--muted);font-size:13px}.wrap{max-width:1120px;margin:28px auto;padding:0 22px 60px}.hero{background:linear-gradient(120deg,#123c78,#1769e8);color:white;border-radius:26px;padding:30px 32px;display:flex;justify-content:space-between;align-items:center;gap:20px;box-shadow:var(--shadow)}.hero h1{font-size:clamp(25px,4vw,36px);margin:0 0 10px}.hero p{margin:0;color:#e3efff;line-height:1.6}.hero-mark{font-size:58px;opacity:.95}.modebar{display:flex;gap:10px;background:#e8edf5;border-radius:18px;padding:7px;margin:24px 0}.mode{flex:1;min-height:58px;border-radius:13px;background:transparent;color:#526174;font-weight:800}.mode.active.practice{background:var(--green);color:white;box-shadow:0 5px 14px #16834a33}.mode.active.real{background:#e77720;color:white;box-shadow:0 5px 14px #e7772033}.section-head{display:flex;justify-content:space-between;align-items:end;margin:26px 0 14px;gap:12px}.section-head h2{font-size:23px;margin:0}.section-head p{margin:5px 0 0;color:var(--muted);font-size:14px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.tile{background:white;border:1px solid var(--line);border-radius:22px;padding:23px;min-height:150px;text-align:left;box-shadow:0 5px 18px #1a35500a;transition:.18s}.tile:hover{transform:translateY(-2px);box-shadow:var(--shadow)}.tile .emoji{font-size:32px}.tile h3{font-size:21px;margin:13px 0 5px}.tile p{margin:0;color:var(--muted);font-size:15px;line-height:1.5}.tile .arrow{float:right;color:var(--blue);font-size:24px}.panel{background:#fff;border:1px solid var(--line);border-radius:24px;padding:24px;box-shadow:0 5px 18px #1a35500a}.notice{margin-top:17px;background:#eef5ff;border:1px solid #d8e7ff;color:#214b81;border-radius:16px;padding:15px 18px;font-size:14px;line-height:1.6}.notice.green{background:#eaf7ef;border-color:#d1efdc;color:#17633b}.notice.orange{background:#fff4e9;border-color:#ffe0c2;color:#8a4915}.screen{display:none}.screen.show{display:block}.back{background:#eaf0f8;color:#28415f;border-radius:12px;padding:12px 16px;font-weight:800;margin-bottom:16px}.screen-title{display:flex;align-items:center;gap:12px;margin-bottom:18px}.screen-title h2{margin:0;font-size:25px}.screen-title p{margin:5px 0 0;color:var(--muted);font-size:14px}.steps{display:flex;gap:7px;margin:15px 0 22px}.step{height:7px;border-radius:10px;background:#e6ebf2;flex:1}.step.done{background:var(--blue)}.bigbtn{width:100%;min-height:64px;padding:15px 18px;border-radius:15px;background:var(--blue);color:white;font-weight:900;font-size:19px;margin-top:10px}.bigbtn.green{background:var(--green)}.bigbtn.orange{background:var(--orange)}.bigbtn.light{background:#edf3fb;color:#244264}.choice-list{display:grid;gap:11px}.choice{width:100%;border:2px solid var(--line);background:white;border-radius:16px;padding:18px;text-align:left;font-weight:800;display:flex;justify-content:space-between;align-items:center;min-height:66px}.choice.selected{border-color:var(--blue);background:#f0f6ff}.choice span:last-child{color:var(--muted);font-weight:500;font-size:14px}.formrow{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:grid;gap:7px;margin:13px 0}.field label{font-weight:800;font-size:15px}.field input,.field select{width:100%;padding:16px;border:2px solid var(--line);border-radius:13px;background:white;color:var(--ink);min-height:56px}.kiosk{max-width:560px;margin:0 auto;background:#f7f8fa;border:8px solid #26364c;border-radius:26px;padding:20px;box-shadow:var(--shadow)}.kiosk-head{text-align:center;background:#fff;border-radius:15px;padding:14px;margin-bottom:15px}.kiosk-head strong{font-size:22px}.kiosk-head p{margin:5px 0 0;color:var(--muted);font-size:14px}.menu-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}.menu-item{background:#fff;border:2px solid #e1e6ed;border-radius:15px;padding:15px 8px;min-height:120px;font-weight:800}.menu-item .food{font-size:31px;display:block;margin-bottom:8px}.menu-item.selected{border-color:var(--green);background:#eaf7ef}.cart{background:white;border-radius:15px;padding:16px;margin-top:14px}.cartline{display:flex;justify-content:space-between;align-items:center;gap:10px}.qty{display:flex;align-items:center;gap:10px}.qty button{width:44px;height:44px;border-radius:11px;background:#eaf0f8;font-weight:900}.kiosk-actions{display:flex;gap:10px;margin-top:12px}.kiosk-actions button{flex:1}.ticket{border:2px dashed #9cb4d2;border-radius:18px;padding:22px;text-align:center;background:#f8fbff}.ticket .check{font-size:48px}.ticket h3{font-size:24px;margin:8px}.ticket p{color:var(--muted);line-height:1.6}.small{font-size:13px;color:var(--muted)}.access{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-top:20px}.access button{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;min-height:44px;font-weight:700}.toast{position:fixed;bottom:calc(22px + env(safe-area-inset-bottom));left:50%;width:max-content;max-width:calc(100vw - 24px);transform:translateX(-50%);background:#172235;color:white;padding:13px 20px;border-radius:14px;box-shadow:var(--shadow);display:none;z-index:20;text-align:center}.toast.show{display:block;animation:pop .2s}@keyframes pop{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translate(-50%,0)}}footer{text-align:center;color:#7a8798;font-size:13px;margin-top:28px}
-@media(max-width:650px){.wrap{padding:0 14px 40px;margin:18px auto}.hero{padding:24px 20px}.hero-mark{font-size:42px}.grid{grid-template-columns:1fr}.modebar{position:sticky;top:70px;z-index:5}.mode{font-size:15px;min-height:55px}.formrow{grid-template-columns:1fr}.panel{padding:17px}.top{padding:12px 15px}}
-
-/* Mobile-first touch and safe-area refinements */
-html{ -webkit-text-size-adjust:100%; text-size-adjust:100%; }
-body{ overscroll-behavior-y:contain; }
-button,.choice,.tile,.menu-item{ touch-action:manipulation; -webkit-tap-highlight-color:transparent; }
-@media(max-width:650px){
-  body{font-size:18px}
-  .wrap{padding-left:12px;padding-right:12px;padding-bottom:calc(34px + env(safe-area-inset-bottom))}
-  .top{padding-top:calc(10px + env(safe-area-inset-top))}
-  .hero{border-radius:20px;padding:22px 18px}
-  .hero h1{font-size:27px;line-height:1.25}
-  .hero p{font-size:15px}
-  .modebar{top:calc(62px + env(safe-area-inset-top));margin-top:17px}
-  .mode{min-width:0;padding:8px 5px;font-size:14px;line-height:1.35}
-  .tile{min-height:132px;padding:19px}
-  .tile h3{font-size:20px}
-  .panel{border-radius:19px;padding:16px}
-  .kiosk{border-width:5px;border-radius:21px;padding:13px}
-  .menu-item{min-height:112px;padding:12px 5px}
-  .bigbtn{min-height:68px;font-size:18px}
-  .choice{min-height:70px;padding:15px 13px}
-  .field input,.field select{font-size:16px;min-height:58px}
-  .back{min-height:48px}
-}
-@media(max-width:380px){
-  .brand{font-size:19px}
-  .top small{font-size:11px}
-  .hero-mark{font-size:34px}
-  .mode{font-size:12px}
-  .menu-grid{gap:8px}
-}
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
-}
-
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f5f7fb">
+  <meta name="description" content="기차, 버스, 택시 이동 과정을 한곳에서 연습하는 SMART RESERVE 교통 통합 프로토타입">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="SMART RESERVE | 교통 통합 예약">
+  <meta property="og:description" content="기차와 버스 좌석을 고르고 택시 호출 과정을 체험해 보세요.">
+  <meta name="color-scheme" content="light">
+  <title>SMART RESERVE | 교통 통합 예약</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --blue: #2878f0;
+      --blue-dark: #1559c5;
+      --blue-soft: #eaf2ff;
+      --ink: #17243b;
+      --muted: #78859a;
+      --line: #e7ebf2;
+      --surface: #fff;
+      --canvas: #f5f7fb;
+      --green: #15956d;
+      --red: #d84a55;
+      --shadow: 0 12px 35px rgb(26 55 100 / 8%);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+      color: var(--ink);
+      background: var(--canvas);
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-width: 320px; min-height: 100vh; background: var(--canvas); }
+    button, input, select { font: inherit; }
+    button { color: inherit; cursor: pointer; }
+    button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid #ffbd4a; outline-offset: 3px; }
+    .app { width: min(100%, 560px); min-height: 100vh; margin: 0 auto; background: var(--canvas); position: relative; padding-bottom: calc(92px + env(safe-area-inset-bottom)); }
+    .topbar { height: 68px; padding: 0 22px; background: rgb(255 255 255 / 94%); border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 5; backdrop-filter: blur(14px); }
+    .brand { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 900; letter-spacing: -.5px; }
+    .brand-mark { width: 35px; height: 35px; display: grid; place-items: center; color: white; border-radius: 12px; background: linear-gradient(145deg, #53a2ff, #2374ec); font-size: 19px; }
+    .demo-pill { background: #fff4e8; color: #a45b12; border: 1px solid #ffe4c7; border-radius: 99px; padding: 7px 10px; font-size: 11px; font-weight: 800; }
+    main { padding: 19px 18px 24px; }
+    .page { display: none; animation: appear .2s ease-out; }
+    .page.active { display: block; }
+    @keyframes appear { from { opacity: .4; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    .greeting { margin: 6px 2px 17px; }
+    .greeting .eyebrow, .eyebrow { color: var(--blue); font-size: 12px; font-weight: 850; letter-spacing: .3px; }
+    h1 { margin: 6px 0 5px; font-size: 25px; letter-spacing: -1.1px; line-height: 1.3; }
+    h2 { margin: 0; font-size: 19px; letter-spacing: -.55px; }
+    h3 { margin: 0; font-size: 16px; }
+    p { margin: 0; }
+    .muted { color: var(--muted); }
+    .small { font-size: 12px; line-height: 1.55; }
+    .hero { border-radius: 24px; padding: 21px; color: white; background: linear-gradient(128deg, #1d59cb 0%, #368cf8 100%); box-shadow: 0 12px 27px rgb(39 111 221 / 20%); position: relative; overflow: hidden; }
+    .hero:after { content: "✦"; position: absolute; right: 23px; top: 7px; color: rgb(255 255 255 / 18%); font-size: 82px; line-height: 1; }
+    .hero h1 { max-width: 280px; margin: 0 0 7px; font-size: 23px; }
+    .hero p { color: #e7f1ff; font-size: 13px; line-height: 1.55; }
+    .hero .hero-tag { display: inline-flex; align-items: center; gap: 6px; margin-top: 15px; padding: 7px 10px; border-radius: 99px; background: rgb(255 255 255 / 16%); font-size: 11px; font-weight: 750; }
+    .section-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 25px 2px 12px; }
+    .section-heading button { background: none; padding: 5px; border: 0; color: var(--blue); font-weight: 800; font-size: 12px; }
+    .service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .service-card { min-width: 0; padding: 16px 8px 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 19px; text-align: center; box-shadow: 0 5px 16px rgb(28 54 90 / 3%); transition: transform .15s, box-shadow .15s; }
+    .service-card:active { transform: scale(.97); }
+    .service-icon { width: 45px; height: 45px; margin: 0 auto 10px; display: grid; place-items: center; border-radius: 15px; background: var(--blue-soft); font-size: 24px; }
+    .service-card strong { display: block; font-size: 13px; }
+    .service-card span:last-child { display: block; margin-top: 4px; color: var(--muted); font-size: 10px; }
+    .guide-card { margin-top: 14px; padding: 15px; border: 1px solid #dfeaff; border-radius: 17px; background: linear-gradient(135deg,#fff,#f3f7ff); }
+    .guide-card h3 { font-size: 13px; }
+    .guide-card > p { margin-top: 4px; color: var(--muted); font-size: 10px; }
+    .guide-list { display: grid; grid-template-columns: repeat(4,1fr); gap: 7px; margin-top: 13px; }
+    .guide-step { min-width: 0; padding: 10px 7px; border-radius: 12px; background: white; border: 1px solid #edf1f8; }
+    .guide-step b { width: 21px; height: 21px; display: grid; place-items: center; margin-bottom: 7px; border-radius: 50%; color: white; background: var(--blue); font-size: 10px; }
+    .guide-step strong { display: block; font-size: 10px; line-height: 1.4; }
+    .guide-step small { display: block; margin-top: 4px; color: var(--muted); font-size: 9px; line-height: 1.4; }
+    .quick-card, .card { padding: 17px; background: var(--surface); border: 1px solid var(--line); border-radius: 20px; box-shadow: 0 5px 18px rgb(28 54 90 / 3%); }
+    .quick-card { margin-top: 19px; }
+    .quick-route { display: grid; grid-template-columns: 1fr 40px 1fr; gap: 9px; align-items: end; }
+    .field { min-width: 0; display: grid; gap: 7px; }
+    .field label { color: #657187; font-size: 11px; font-weight: 800; }
+    .field input, .field select { width: 100%; min-width: 0; height: 47px; padding: 0 11px; border: 1px solid var(--line); border-radius: 12px; background: white; color: var(--ink); font-size: 14px; }
+    .swap { width: 38px; height: 42px; border: 1px solid var(--line); background: white; color: var(--blue); border-radius: 13px; font-size: 18px; }
+    .quick-bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 11px; }
+    .date-field { display: grid; gap: 7px; }
+    .location-button { height: 42px; border: 1px solid var(--line); border-radius: 11px; background: #fff; color: #44536c; font-size: 12px; font-weight: 750; }
+    .primary, .secondary, .danger, .outline { min-height: 48px; padding: 0 16px; border: 0; border-radius: 14px; font-size: 14px; font-weight: 850; }
+    .primary { background: var(--blue); color: #fff; box-shadow: 0 5px 13px rgb(40 120 240 / 18%); }
+    .primary:disabled { background: #b7c5d9; box-shadow: none; cursor: not-allowed; }
+    .secondary { background: var(--blue-soft); color: var(--blue-dark); }
+    .outline { background: white; border: 1px solid var(--line); color: #40506a; }
+    .danger { background: #fff0f1; color: var(--red); }
+    .wide { width: 100%; margin-top: 14px; }
+    .notice { margin-top: 14px; padding: 12px 14px; border: 1px solid #ffe3c3; border-radius: 14px; color: #84501c; background: #fff7ed; font-size: 11px; line-height: 1.55; }
+    .notice.warning { border-color: #ffd1d1; background: #fff0f0; color: #9c3434; }
+    .favorite-list, .booking-list, .result-list { display: grid; gap: 10px; }
+    .favorite { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 13px; text-align: left; border: 1px solid var(--line); border-radius: 15px; background: white; }
+    .favorite strong { display: block; font-size: 13px; }
+    .favorite small { display: block; margin-top: 4px; color: var(--muted); font-size: 10px; }
+    .arrow { color: var(--blue); font-size: 19px; }
+    .empty { padding: 27px 14px; text-align: center; color: var(--muted); font-size: 13px; line-height: 1.7; }
+    .back-row { margin: 1px 0 16px; display: flex; align-items: center; gap: 10px; }
+    .back { width: 39px; height: 39px; flex: 0 0 39px; border: 1px solid var(--line); border-radius: 13px; background: white; color: #34445c; font-size: 19px; }
+    .back-row h1 { margin: 0; font-size: 21px; }
+    .back-row p { margin-top: 3px; font-size: 11px; color: var(--muted); }
+    .form-stack { display: grid; gap: 13px; }
+    .route-inputs { display: grid; grid-template-columns: 1fr 38px 1fr; align-items: end; gap: 8px; }
+    .route-inputs .swap { margin-bottom: 2px; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .passenger-control { min-height: 47px; display: flex; align-items: center; justify-content: space-between; border: 1px solid var(--line); border-radius: 12px; padding: 0 9px; }
+    .passenger-control button { width: 30px; height: 30px; border: 0; border-radius: 10px; background: var(--blue-soft); color: var(--blue); font-size: 18px; }
+    .passenger-control strong { font-size: 12px; }
+    .demo-caption { margin: 10px 1px 0; color: var(--muted); font-size: 10px; line-height: 1.5; }
+    .stepper { display: flex; gap: 5px; margin: 0 0 15px; }
+    .step-dot { height: 4px; flex: 1; border-radius: 6px; background: #e4e9f1; }
+    .step-dot.on { background: var(--blue); }
+    .summary-route { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 13px; background: #f6f9ff; border: 1px solid #e8effb; border-radius: 14px; }
+    .summary-route strong { font-size: 13px; }
+    .summary-route span { color: var(--blue); }
+    .summary-route small { display: block; margin-top: 5px; color: var(--muted); font-size: 10px; }
+    .result-card { width: 100%; padding: 15px; border: 1px solid var(--line); border-radius: 17px; background: white; text-align: left; }
+    .result-card:active { border-color: var(--blue); background: #f8fbff; }
+    .result-top, .result-bottom { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .result-top strong { font-size: 14px; }
+    .badge { padding: 5px 8px; color: var(--blue-dark); background: var(--blue-soft); border-radius: 99px; font-size: 10px; font-weight: 800; }
+    .route-times { display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: center; gap: 5px; margin: 15px 0; text-align: center; }
+    .route-times strong { display: block; font-size: 17px; }
+    .route-times small { display: block; margin-top: 3px; color: var(--muted); font-size: 10px; }
+    .route-line { color: #95a1b5; font-size: 11px; }
+    .result-bottom { color: var(--muted); font-size: 10px; }
+    .result-bottom strong { color: var(--ink); font-size: 14px; }
+    .class-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 14px 0; }
+    .class-option { min-height: 45px; border: 1px solid var(--line); border-radius: 12px; background: white; font-size: 12px; font-weight: 800; }
+    .class-option.active { border: 2px solid var(--blue); background: var(--blue-soft); color: var(--blue-dark); }
+    .seat-card { padding: 16px 12px; background: #f8faff; border: 1px solid #e7edf7; border-radius: 18px; }
+    .seat-front { width: 82px; margin: 0 auto 17px; padding: 7px; border-radius: 9px 9px 15px 15px; background: #e6ebf3; color: #6f7a8c; text-align: center; font-size: 10px; font-weight: 800; }
+    .seat-grid { width: min(100%, 278px); margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 17px 1fr 1fr; gap: 7px 5px; }
+    .seat { min-width: 0; height: 35px; border: 1px solid #cfe0f9; border-radius: 9px; background: white; color: #3c5a80; font-size: 10px; font-weight: 800; }
+    .seat.selected { border-color: var(--blue); background: var(--blue); color: white; box-shadow: 0 3px 8px rgb(40 120 240 / 25%); }
+    .seat.booked { border-color: #e2e5eb; background: #e9ecf1; color: #a1a9b5; cursor: not-allowed; text-decoration: line-through; }
+    .aisle { display: grid; place-items: center; color: #adb7c7; font-size: 9px; }
+    .seat-legend { display: flex; justify-content: center; gap: 13px; flex-wrap: wrap; margin-top: 14px; color: #67748a; font-size: 10px; }
+    .seat-legend span { display: inline-flex; align-items: center; gap: 5px; }
+    .legend-box { width: 12px; height: 12px; border: 1px solid #cfe0f9; border-radius: 4px; background: white; }
+    .legend-box.chosen { border-color: var(--blue); background: var(--blue); }
+    .legend-box.unavailable { border-color: #e2e5eb; background: #e9ecf1; }
+    .selection-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 13px; font-size: 12px; }
+    .selection-row strong { color: var(--blue-dark); }
+    .fare-row { display: flex; justify-content: space-between; gap: 10px; padding: 11px 0; border-bottom: 1px solid var(--line); font-size: 12px; }
+    .fare-row:last-child { border-bottom: 0; }
+    .fare-row.total { padding-top: 14px; color: var(--ink); font-size: 14px; font-weight: 900; }
+    .success-mark { width: 60px; height: 60px; margin: 0 auto 13px; display: grid; place-items: center; border-radius: 50%; color: white; background: var(--green); font-size: 30px; }
+    .success-card { padding: 25px 17px; text-align: center; }
+    .success-card h2 { margin-bottom: 7px; }
+    .success-card .muted { font-size: 12px; line-height: 1.6; }
+    .ticket-code { margin: 17px auto 0; padding: 11px; border-radius: 11px; color: #53617a; background: #f3f6fa; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 12px; letter-spacing: .4px; }
+    .taxi-map { min-height: 155px; margin-bottom: 14px; overflow: hidden; position: relative; border-radius: 17px; background: linear-gradient(135deg, #e5f1ff, #eef5ff); border: 1px solid #dfeaf9; }
+    .taxi-map:before, .taxi-map:after { content: ""; position: absolute; width: 150%; height: 17px; left: -20%; top: 52px; border: 6px solid white; border-left: 0; border-right: 0; border-radius: 50%; transform: rotate(-17deg); }
+    .taxi-map:after { top: 102px; transform: rotate(20deg); }
+    .map-pin { position: absolute; z-index: 1; left: 22%; top: 34px; font-size: 23px; }
+    .map-pin.end { left: auto; right: 18%; top: 92px; }
+    .map-label { position: absolute; z-index: 1; right: 12px; bottom: 10px; padding: 6px 9px; border-radius: 99px; color: #58677e; background: white; font-size: 9px; }
+    .vehicle-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin: 12px 0; }
+    .vehicle { padding: 12px; text-align: left; border: 1px solid var(--line); border-radius: 14px; background: white; }
+    .vehicle.active { border: 2px solid var(--blue); background: #f6f9ff; }
+    .vehicle .vehicle-icon { display: block; margin-bottom: 5px; font-size: 21px; }
+    .vehicle strong { display: block; font-size: 12px; }
+    .vehicle small { display: block; margin-top: 4px; color: var(--muted); font-size: 10px; }
+    .quote { display: flex; justify-content: space-between; padding: 13px; border-radius: 13px; background: #f5f8fe; font-size: 12px; }
+    .quote strong { color: var(--blue-dark); }
+    .booking-card { padding: 15px; border: 1px solid var(--line); border-radius: 17px; background: white; }
+    .booking-card.cancelled { opacity: .65; }
+    .booking-head { display: flex; justify-content: space-between; align-items: center; gap: 9px; }
+    .booking-head strong { font-size: 12px; }
+    .status { padding: 5px 8px; border-radius: 99px; background: #eaf7f0; color: #188154; font-size: 9px; font-weight: 850; }
+    .status.cancelled { background: #f0f1f3; color: #7d8796; }
+    .booking-route { margin: 13px 0 7px; font-size: 15px; font-weight: 900; }
+    .booking-meta { color: var(--muted); font-size: 10px; line-height: 1.7; }
+    .booking-actions { display: flex; gap: 7px; margin-top: 12px; }
+    .booking-actions button { min-height: 35px; padding: 0 11px; border-radius: 10px; font-size: 10px; font-weight: 800; }
+    .profile-card { display: flex; align-items: center; gap: 13px; padding: 17px; border-radius: 19px; background: linear-gradient(125deg,#225fcf,#368cf8); color: white; }
+    .avatar { width: 52px; height: 52px; flex: 0 0 52px; display: grid; place-items: center; border-radius: 50%; background: rgb(255 255 255 / 20%); font-size: 27px; }
+    .profile-card strong { display: block; font-size: 16px; }
+    .profile-card small { display: block; margin-top: 4px; color: #e4efff; font-size: 10px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .stat { padding: 13px 7px; border: 1px solid var(--line); border-radius: 14px; text-align: center; background: white; }
+    .stat strong { display: block; color: var(--blue-dark); font-size: 18px; }
+    .stat small { display: block; margin-top: 3px; color: var(--muted); font-size: 9px; }
+    .favorite-form { display: grid; gap: 8px; }
+    .favorite-form button { min-height: 42px; }
+    .bottom-nav { width: min(100%, 560px); height: calc(72px + env(safe-area-inset-bottom)); padding: 7px 9px env(safe-area-inset-bottom); position: fixed; left: 50%; bottom: 0; z-index: 6; transform: translateX(-50%); display: grid; grid-template-columns: repeat(5, 1fr); background: rgb(255 255 255 / 97%); border-top: 1px solid var(--line); backdrop-filter: blur(14px); }
+    .nav-item { display: grid; align-content: center; justify-items: center; gap: 3px; border: 0; background: transparent; color: #909bae; font-size: 9px; font-weight: 800; }
+    .nav-item .nav-icon { font-size: 20px; line-height: 1; }
+    .nav-item.active { color: var(--blue); }
+    .app-footer { padding: 0 16px 18px; color: #96a0b0; text-align: center; font-size: 10px; }
+    .toast { position: fixed; left: 50%; bottom: calc(84px + env(safe-area-inset-bottom)); z-index: 20; width: max-content; max-width: calc(100vw - 28px); padding: 12px 16px; transform: translateX(-50%); border-radius: 13px; color: white; background: #1d2b42; box-shadow: var(--shadow); text-align: center; font-size: 12px; opacity: 0; pointer-events: none; transition: opacity .16s; }
+    .toast.show { opacity: 1; }
+    .storage-warning { margin: 0 0 14px; padding: 10px 12px; border-radius: 12px; background: #fff0f0; color: #983333; font-size: 11px; line-height: 1.5; }
+    @media (min-width: 700px) {
+      body { padding: 22px 0; }
+      .app { min-height: calc(100vh - 44px); border: 1px solid #e9edf4; border-radius: 28px; overflow: clip; box-shadow: 0 20px 70px rgb(30 55 90 / 10%); }
+      .topbar { border-radius: 28px 28px 0 0; }
+      .bottom-nav { bottom: 22px; border-radius: 0 0 28px 28px; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *:before, *:after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+  </style>
 </head>
 <body>
-<header><div class="top"><div class="brand"><div class="logo">한</div>한걸음</div><small>누구나 쉽게, 한 단계씩</small></div></header>
-<main class="wrap">
-<section id="home" class="screen show">
- <div class="hero"><div><h1>천천히 해도 괜찮아요.</h1><p>먼저 연습하고, 익숙해지면 실제 예약까지.<br>큰 버튼으로 쉽고 안전하게 이용해 보세요.</p></div><div class="hero-mark">☝️</div></div>
- <div class="modebar"><button class="mode active practice" id="practiceMode" onclick="setMode('practice')">연습 모드 · 결제되지 않아요</button><button class="mode real" id="realMode" onclick="setMode('real')">실전 예약 모드</button></div>
- <div class="section-head"><div><h2 id="homeTitle">무엇을 연습할까요?</h2><p id="homeDesc">실제 돈이 나가지 않는 가상 환경입니다.</p></div></div>
- <div class="grid" id="homeTiles"></div>
- <div class="notice" id="modeNotice">안심하세요. 연습 모드에서는 실제 결제나 예약이 발생하지 않습니다.</div>
- <div class="access"><strong>화면 설정</strong><button onclick="fontChange(1)">글씨 크게 +</button><button onclick="fontChange(-1)">글씨 작게 −</button><button onclick="speak('한걸음 앱입니다. 원하는 서비스를 큰 버튼으로 선택하세요.')">음성 안내 듣기</button></div>
-</section>
-<section id="flow" class="screen">
- <button class="back" onclick="goHome()">← 처음 화면</button>
- <div class="screen-title"><div><h2 id="flowTitle">서비스</h2><p id="flowSubtitle">화면 안내에 따라 진행하세요.</p></div></div>
- <div class="steps" id="steps"></div>
- <div id="flowBody"></div>
-</section>
-<footer>한걸음 · 사용자 맞춤형 예약 및 키오스크 연습 프로토타입<br>※ 실전 예약 화면은 과제 시연용 모의 화면이며 실제 외부 예약·결제 API와 연결되어 있지 않습니다.</footer>
-</main>
-<div class="toast" id="toast"></div>
-<script>
-let mode='practice', current=null, step=0, state={}, fontSize=17;
-const $=id=>document.getElementById(id);
-function setMode(m){mode=m;$('practiceMode').classList.toggle('active',m==='practice');$('realMode').classList.toggle('active',m==='real');$('practiceMode').classList.toggle('practice',true);$('realMode').classList.toggle('real',true);$('homeTitle').textContent=m==='practice'?'무엇을 연습할까요?':'어떤 서비스를 예약할까요?';$('homeDesc').textContent=m==='practice'?'실제 돈이 나가지 않는 가상 환경입니다.':'예약 과정을 미리 확인하는 시연용 화면입니다.';$('modeNotice').className='notice '+(m==='practice'?'green':'orange');$('modeNotice').textContent=m==='practice'?'안심하세요. 연습 모드에서는 실제 결제나 예약이 발생하지 않습니다.':'실전 예약 시연 화면입니다. 현재 실제 결제 및 외부 예약은 연결되어 있지 않습니다.';renderTiles()}
-function renderTiles(){let items=mode==='practice'?[['🧾','식당 키오스크 연습','메뉴 선택부터 가상 결제까지 연습','food'],['🚆','교통 발권기 연습','기차·버스 승차권 발권 연습','transport']]:[['🍽️','식당 예약','지역과 날짜, 인원을 선택하는 과정','restaurant'],['🚍','교통 예매','출발지와 목적지를 입력하는 과정','traffic']];$('homeTiles').innerHTML=items.map(x=>`<button class="tile" onclick="start('${x[3]}')"><span class="arrow">→</span><span class="emoji">${x[0]}</span><h3>${x[1]}</h3><p>${x[2]}</p></button>`).join('')}
-function goHome(){$('flow').classList.remove('show');$('home').classList.add('show');current=null;renderTiles()}
-function start(type){current=type;step=0;state={qty:1};$('home').classList.remove('show');$('flow').classList.add('show');renderFlow()}
-function setStep(n){step=n;renderFlow()}
-function renderFlow(){$('flowTitle').textContent=({food:'식당 키오스크 연습',transport:'교통 발권기 연습',restaurant:'식당 예약',traffic:'교통 예매'})[current];$('flowSubtitle').textContent=mode==='practice'?'연습은 언제든 처음부터 다시 할 수 있습니다.':'큰 글씨 안내에 따라 항목을 선택하세요.';let total=current==='food'?3:current==='transport'?3:3;$('steps').innerHTML=Array.from({length:total},(_,i)=>`<div class="step ${i<=step?'done':''}"></div>`).join('');if(current==='food')foodFlow();if(current==='transport')transportFlow();if(current==='restaurant')restaurantFlow();if(current==='traffic')trafficFlow()}
-function foodFlow(){let b=$('flowBody');if(step===0){b.innerHTML=`<div class="kiosk"><div class="kiosk-head"><strong>🍴 행복한 식당</strong><p>주문하실 메뉴를 선택해 주세요.</p></div><div class="menu-grid">${[['🍔','불고기 버거','7,000원'],['🍜','잔치국수','6,000원'],['🍚','비빔밥','8,000원'],['🥗','샐러드','7,500원']].map((x,i)=>`<button class="menu-item ${state.item===i?'selected':''}" onclick="state.item=${i};renderFlow()"><span class="food">${x[0]}</span>${x[1]}<br><span class="small">${x[2]}</span></button>`).join('')}</div><button class="bigbtn green" onclick="if(state.item===undefined){toast('메뉴를 먼저 선택해 주세요.');return}setStep(1)">선택 완료 · 다음</button></div><div class="notice green">연습 모드: 어떤 메뉴를 선택해도 실제 주문은 접수되지 않습니다.</div>`}else if(step===1){let names=['불고기 버거','잔치국수','비빔밥','샐러드'],prices=[7000,6000,8000,7500];b.innerHTML=`<div class="kiosk"><div class="kiosk-head"><strong>주문 내용을 확인해 주세요</strong><p>수량을 조절할 수 있습니다.</p></div><div class="cart"><div class="cartline"><strong>${names[state.item]}</strong><strong>${prices[state.item].toLocaleString()}원</strong></div><hr style="border:0;border-top:1px solid #e5eaf1;margin:15px 0"><div class="cartline"><span>수량</span><div class="qty"><button onclick="state.qty=Math.max(1,state.qty-1);renderFlow()">−</button><strong>${state.qty}</strong><button onclick="state.qty++;renderFlow()">+</button></div></div><hr style="border:0;border-top:1px solid #e5eaf1;margin:15px 0"><div class="cartline"><strong>합계</strong><strong>${(prices[state.item]*state.qty).toLocaleString()}원</strong></div></div><button class="bigbtn green" onclick="setStep(2)">주문 내용 확인</button><button class="bigbtn light" onclick="setStep(0)">메뉴 다시 선택</button></div>`}else{b.innerHTML=`<div class="kiosk"><div class="kiosk-head"><strong>결제 단계 연습</strong><p>실제 결제는 절대 진행되지 않습니다.</p></div><div class="ticket"><div class="check">✓</div><h3>가상 주문 완료!</h3><p>주문 과정을 성공적으로 연습했습니다.<br>실제 돈은 결제되지 않았습니다.</p></div><button class="bigbtn green" onclick="toast('연습을 완료했습니다. 잘하셨어요!')">연습 완료</button><button class="bigbtn light" onclick="step=0;state={qty:1};renderFlow()">처음부터 다시 연습</button></div>`}}
-function transportFlow(){let b=$('flowBody');if(step===0){b.innerHTML=`<div class="panel"><h3>어떤 승차권을 발권할까요?</h3><div class="choice-list">${[['🚄','기차 승차권','KTX · 일반열차'],['🚌','시외버스 승차권','시외·고속버스']].map((x,i)=>`<button class="choice ${state.kind===i?'selected':''}" onclick="state.kind=${i};renderFlow()"><span>${x[0]}　${x[1]}</span><span>${x[2]}</span></button>`).join('')}</div><button class="bigbtn green" onclick="if(state.kind===undefined){toast('교통수단을 선택해 주세요.');return}setStep(1)">다음</button></div><div class="notice green">실제 발권기가 아닌 연습용 화면입니다.</div>`}else if(step===1){b.innerHTML=`<div class="panel"><h3>승차 정보를 입력해 주세요.</h3><div class="field"><label>출발역 / 터미널</label><select id="from"><option>수원</option><option>서울</option><option>대전</option></select></div><div class="field"><label>도착역 / 터미널</label><select id="to"><option>부산</option><option>대전</option><option>서울</option></select></div><div class="field"><label>승차 인원</label><select id="people"><option>어른 1명</option><option>어른 2명</option><option>어른 1명, 어린이 1명</option></select></div><button class="bigbtn green" onclick="state.from=$('from').value;state.to=$('to').value;state.people=$('people').value;setStep(2)">선택 완료</button><button class="bigbtn light" onclick="setStep(0)">이전</button></div>`}else{b.innerHTML=`<div class="panel"><div class="ticket"><div class="check">🎫</div><h3>발권 연습 완료</h3><p>${state.from||'수원'} → ${state.to||'부산'}<br>${state.people||'어른 1명'}<br><br>가상 승차권입니다. 실제 표가 발권되지 않았습니다.</p></div><button class="bigbtn green" onclick="toast('교통 발권 연습을 완료했습니다.')">완료</button><button class="bigbtn light" onclick="step=0;state={};renderFlow()">다시 연습</button></div>`}}
-function restaurantFlow(){let b=$('flowBody');if(step===0){b.innerHTML=`<div class="panel"><h3>식당 예약 정보를 선택해 주세요.</h3><div class="field"><label>지역</label><select id="area"><option>수원시</option><option>서울특별시</option><option>화성시</option></select></div><div class="field"><label>방문 날짜</label><input id="date" type="date" value="${new Date().toISOString().slice(0,10)}"></div><div class="formrow"><div class="field"><label>방문 시간</label><select id="time"><option>12:00</option><option>13:00</option><option>18:00</option><option>19:00</option></select></div><div class="field"><label>방문 인원</label><select id="count"><option>2명</option><option>1명</option><option>3명</option><option>4명</option></select></div></div><button class="bigbtn orange" onclick="state.area=$('area').value;state.date=$('date').value;state.time=$('time').value;state.count=$('count').value;setStep(1)">예약 정보 확인</button></div>`}else if(step===1){b.innerHTML=`<div class="panel"><h3>예약 정보를 확인해 주세요.</h3><div class="ticket"><h3>🍽️ 방문 예약</h3><p>${state.area}<br>${state.date} · ${state.time}<br>${state.count}</p></div><div class="notice orange">시연용 예약입니다. 실제 식당에 예약이 전달되지 않습니다.</div><button class="bigbtn orange" onclick="setStep(2)">모의 예약 확정</button><button class="bigbtn light" onclick="setStep(0)">수정하기</button></div>`}else{b.innerHTML=`<div class="panel"><div class="ticket"><div class="check">✓</div><h3>모의 예약이 완료되었습니다.</h3><p>${state.area} · ${state.date}<br>${state.time} · ${state.count}<br>예약번호: DEMO-2026-001</p></div><button class="bigbtn orange" onclick="toast('예약 과정을 완료했습니다.')">확인</button><button class="bigbtn light" onclick="goHome()">홈으로</button></div>`}}
-function trafficFlow(){let b=$('flowBody');if(step===0){b.innerHTML=`<div class="panel"><h3>이동 정보를 입력해 주세요.</h3><div class="field"><label>출발지</label><input id="from" placeholder="예: 수원"></div><div class="field"><label>도착지</label><input id="to" placeholder="예: 서울"></div><div class="field"><label>이동 수단</label><select id="kind"><option>시외버스</option><option>기차</option></select></div><button class="bigbtn orange" onclick="state.from=$('from').value||'수원';state.to=$('to').value||'서울';state.kind=$('kind').value;setStep(1)">다음</button></div>`}else if(step===1){b.innerHTML=`<div class="panel"><h3>예매 정보를 확인해 주세요.</h3><div class="ticket"><div style="font-size:32px">🚆</div><h3>${state.from} → ${state.to}</h3><p>${state.kind} · 성인 1명<br>시연용 임의 운임: 12,000원</p></div><div class="notice orange">실제 운행 정보 및 결제 시스템과 연결되지 않은 시연 데이터입니다.</div><button class="bigbtn orange" onclick="setStep(2)">모의 예매 확정</button><button class="bigbtn light" onclick="setStep(0)">수정하기</button></div>`}else{b.innerHTML=`<div class="panel"><div class="ticket"><div class="check">✓</div><h3>모의 예매 완료</h3><p>${state.from} → ${state.to}<br>${state.kind} · 성인 1명<br>가상 승차권 번호: DEMO-TICKET-01</p></div><button class="bigbtn orange" onclick="goHome()">홈으로</button></div>`}}
-function toast(msg){$('toast').textContent=msg;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),2200)}
-function fontChange(d){fontSize=Math.max(15,Math.min(22,fontSize+d));document.body.style.fontSize=fontSize+'px';toast('글씨 크기를 조절했습니다.')}
-function speak(msg){if('speechSynthesis'in window){speechSynthesis.cancel();speechSynthesis.speak(new SpeechSynthesisUtterance(msg))}else toast(msg)}
-renderTiles();
-</script>
-</body></html>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">S</span>SMART RESERVE</div>
+      <span class="demo-pill">가상 데이터 · 결제 없음</span>
+    </header>
+    <main>
+      <div id="storageWarning"></div>
+      <section id="homePage" class="page active" aria-label="홈"></section>
+      <section id="searchPage" class="page" aria-label="교통편 검색"></section>
+      <section id="taxiPage" class="page" aria-label="택시 호출"></section>
+      <section id="bookingsPage" class="page" aria-label="예약 내역"></section>
+      <section id="profilePage" class="page" aria-label="마이페이지"></section>
+    </main>
+    <footer class="app-footer">SMART RESERVE · 제작 이헌재</footer>
+    <nav class="bottom-nav" aria-label="주요 메뉴">
+      <button class="nav-item active" data-nav="home"><span class="nav-icon">⌂</span>홈</button>
+      <button class="nav-item" data-nav="train"><span class="nav-icon">🚄</span>기차</button>
+      <button class="nav-item" data-nav="bus"><span class="nav-icon">🚌</span>버스</button>
+      <button class="nav-item" data-nav="bookings"><span class="nav-icon">▤</span>예약내역</button>
+      <button class="nav-item" data-nav="profile"><span class="nav-icon">☺</span>마이</button>
+    </nav>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <datalist id="stationOptions"></datalist>
+  <script>
+    "use strict";
+    const stations = ["서울역", "용산역", "수원역", "대전역", "동대구역", "부산역", "광주송정역", "천안아산역", "서울고속버스터미널", "동서울터미널", "수원버스터미널", "대전복합터미널", "부산종합버스터미널", "광주종합버스터미널"];
+    const trainSchedules = [
+      { name: "KTX 103", badge: "KTX", depart: "08:12", arrive: "10:48", duration: "2시간 36분", fare: 59800, premium: 83800 },
+      { name: "KTX 211", badge: "KTX", depart: "09:03", arrive: "11:51", duration: "2시간 48분", fare: 59800, premium: 83800 },
+      { name: "ITX-마음 1151", badge: "ITX-마음", depart: "10:20", arrive: "13:42", duration: "3시간 22분", fare: 43200, premium: 0 },
+      { name: "무궁화호 1211", badge: "무궁화", depart: "11:14", arrive: "15:31", duration: "4시간 17분", fare: 28600, premium: 0 },
+      { name: "KTX 127", badge: "KTX", depart: "12:02", arrive: "14:39", duration: "2시간 37분", fare: 59800, premium: 83800 }
+    ];
+    const busSchedules = [
+      { name: "프리미엄 701", badge: "프리미엄", depart: "08:00", arrive: "11:45", duration: "3시간 45분", fare: 42100 },
+      { name: "우등 703", badge: "우등", depart: "09:10", arrive: "12:55", duration: "3시간 45분", fare: 32400 },
+      { name: "일반 705", badge: "일반", depart: "10:20", arrive: "14:20", duration: "4시간", fare: 21800 },
+      { name: "우등 707", badge: "우등", depart: "11:30", arrive: "15:15", duration: "3시간 45분", fare: 32400 },
+      { name: "프리미엄 709", badge: "프리미엄", depart: "12:40", arrive: "16:25", duration: "3시간 45분", fare: 42100 }
+    ];
+    const bookedSeats = { standard: ["1A", "2D", "3B", "5C", "7A", "8D"], premium: ["2A", "4D", "6B"], bus: ["1D", "2B", "4A", "6C", "8D"] };
+    const today = new Date();
+    const localDate = new Date(today.getTime() - today.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+    const state = {
+      page: "home",
+      profile: { name: "스마트 여행자" },
+      bookings: [],
+      favorites: [],
+      draft: { type: "train", from: "서울역", to: "부산역", date: localDate, passengers: 1 },
+      stage: "form",
+      results: [],
+      schedule: null,
+      seatClass: "standard",
+      seats: [],
+      taxi: { from: "", to: "", vehicle: "standard" },
+      storageWarning: ""
+    };
+    const $ = (selector, root = document) => root.querySelector(selector);
+    const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+    const escapeHtml = value => String(value ?? "").replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
+    const won = value => `${Number(value).toLocaleString("ko-KR")}원`;
+    const formatDate = value => value ? new Date(`${value}T00:00:00`).toLocaleDateString("ko-KR", { month: "long", day: "numeric", weekday: "short" }) : "";
+    const serviceName = type => type === "train" ? "기차" : type === "bus" ? "버스" : "택시";
+    const serviceIcon = type => type === "train" ? "🚄" : type === "bus" ? "🚌" : "🚕";
+    const readStoredState = () => {
+      try {
+        const saved = JSON.parse(localStorage.getItem("smart-reserve-v1") || "{}");
+        if (saved && typeof saved === "object") {
+          if (Array.isArray(saved.bookings)) state.bookings = saved.bookings;
+          if (Array.isArray(saved.favorites)) state.favorites = saved.favorites;
+          if (saved.profile && typeof saved.profile.name === "string") state.profile.name = saved.profile.name;
+        }
+      } catch {
+        state.storageWarning = "이 브라우저에서 저장된 데이터를 읽지 못했습니다. 예약은 이 화면을 닫으면 사라질 수 있습니다.";
+      }
+    };
+    const persist = () => {
+      try {
+        localStorage.setItem("smart-reserve-v1", JSON.stringify({ bookings: state.bookings, favorites: state.favorites, profile: state.profile }));
+      } catch {
+        state.storageWarning = "브라우저 저장 공간을 사용할 수 없어 변경 내용을 저장하지 못했습니다.";
+        renderStorageWarning();
+        toast(state.storageWarning);
+      }
+    };
+    function renderStorageWarning() {
+      $("#storageWarning").innerHTML = state.storageWarning ? `<div class="storage-warning">${escapeHtml(state.storageWarning)}</div>` : "";
+    }
+    function toast(message) {
+      const element = $("#toast");
+      element.textContent = message;
+      element.classList.add("show");
+      clearTimeout(toast.timer);
+      toast.timer = setTimeout(() => element.classList.remove("show"), 2400);
+    }
+    function updateNav() {
+      $$(".nav-item").forEach(button => button.classList.toggle("active", button.dataset.nav === state.page || (state.page === "taxi" && button.dataset.nav === "home") || (state.page === "search" && button.dataset.nav === state.draft.type)));
+    }
+    function showPage(page) {
+      state.page = page;
+      $$(".page").forEach(section => section.classList.toggle("active", section.id === `${page}Page` || (page === "search" && section.id === "searchPage")));
+      updateNav();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      render();
+    }
+    function render() {
+      renderStorageWarning();
+      updateNav();
+      if (state.page === "home") renderHome();
+      if (state.page === "search") renderSearch();
+      if (state.page === "taxi") renderTaxi();
+      if (state.page === "bookings") renderBookings();
+      if (state.page === "profile") renderProfile();
+    }
+    function searchForm(type, home = false) {
+      const isTrain = type === "train";
+      const from = home ? "homeFrom" : "searchFrom";
+      const to = home ? "homeTo" : "searchTo";
+      const date = home ? "homeDate" : "searchDate";
+      const passengers = home ? "homePassengers" : "searchPassengers";
+      return `<div class="${home ? "quick-card" : "card"}">
+        ${home ? "" : `<div class="eyebrow">${serviceIcon(type)} ${serviceName(type)} 시간표</div>`}
+        <div class="route-inputs quick-route">
+          <div class="field"><label for="${from}">출발 ${isTrain ? "역" : "터미널"}</label><input id="${from}" list="stationOptions" value="${escapeHtml(state.draft.from)}" placeholder="${isTrain ? "출발역 검색" : "출발 터미널 검색"}" autocomplete="off"></div>
+          <button class="swap" type="button" aria-label="출발지와 도착지 바꾸기" data-action="swap-route" data-home="${home}">⇄</button>
+          <div class="field"><label for="${to}">도착 ${isTrain ? "역" : "터미널"}</label><input id="${to}" list="stationOptions" value="${escapeHtml(state.draft.to)}" placeholder="${isTrain ? "도착역 검색" : "도착 터미널 검색"}" autocomplete="off"></div>
+        </div>
+        <div class="quick-bottom">
+          <div class="date-field"><div class="field"><label for="${date}">출발 날짜</label><input id="${date}" type="date" min="${localDate}" value="${escapeHtml(state.draft.date)}"></div></div>
+          <div class="field"><label>인원</label><div class="passenger-control"><button type="button" aria-label="인원 줄이기" data-action="passenger" data-delta="-1" data-home="${home}">−</button><strong>${state.draft.passengers}명</strong><button type="button" aria-label="인원 늘리기" data-action="passenger" data-delta="1" data-home="${home}">＋</button></div></div>
+        </div>
+        ${home ? `<button class="location-button wide" type="button" data-action="nearby">⌖ 현재 위치로 출발지 설정</button>` : ""}
+        <button class="primary wide" type="button" data-action="search-routes" data-type="${type}" data-home="${home}">${isTrain ? "열차" : "버스"} 검색하기</button>
+        ${home ? "" : `<p class="demo-caption">운행 시간과 좌석은 시연을 위한 가상 데이터입니다.</p>`}
+      </div>`;
+    }
+    function renderHome() {
+      const favorites = state.favorites.map((route, index) => `<button class="favorite" data-action="use-favorite" data-index="${index}"><span><strong>${escapeHtml(route.from)} <span class="arrow">→</span> ${escapeHtml(route.to)}</strong><small>자주 가는 경로 · ${escapeHtml(serviceName(route.type))}</small></span><span class="arrow">›</span></button>`).join("");
+      const recent = state.bookings.filter(item => item.status !== "cancelled").slice(-2).reverse();
+      $("#homePage").innerHTML = `<div class="greeting"><span class="eyebrow">MOVE YOUR WAY</span><h1>안녕하세요, ${escapeHtml(state.profile.name)}님</h1><p class="muted small">오늘은 어디로 이동할까요?</p></div>
+        <section class="hero"><h1>이동의 모든 순간,<br>한곳에서 편하게</h1><p>기차 · 버스 · 택시를<br>쉽고 간편하게 둘러보세요.</p><span class="hero-tag">✦ 여행 계획을 시작해 보세요</span></section>
+        <div class="section-heading"><h2>어떤 이동이 필요하세요?</h2></div>
+        <div class="service-grid">
+          <button class="service-card" data-nav="train"><span class="service-icon">🚄</span><strong>기차 예약</strong><span>시간표 · 좌석 선택</span></button>
+          <button class="service-card" data-nav="bus"><span class="service-icon">🚌</span><strong>버스 예약</strong><span>터미널 · 좌석 선택</span></button>
+          <button class="service-card" data-nav="taxi"><span class="service-icon">🚕</span><strong>택시 호출</strong><span>예상 요금 확인</span></button>
+        </div>
+        <aside class="guide-card" aria-label="친절한 이용 가이드"><h3>처음 이용해도 괜찮아요 😊</h3><p>아래 순서대로 천천히 따라오세요.</p><div class="guide-list">
+          <div class="guide-step"><b>1</b><strong>이동수단 선택</strong><small>기차·버스·택시 중 골라요</small></div>
+          <div class="guide-step"><b>2</b><strong>경로와 날짜 입력</strong><small>출발지와 도착지를 찾아요</small></div>
+          <div class="guide-step"><b>3</b><strong>좌석 고르기</strong><small>인원수만큼 좌석을 눌러요</small></div>
+          <div class="guide-step"><b>4</b><strong>내용 확인하기</strong><small>가상 예약으로 마무리해요</small></div>
+        </div></aside>
+        <div class="section-heading"><h2>빠른 기차 검색</h2><button data-nav="train">더 보기</button></div>
+        ${searchForm("train", true)}
+        <div class="section-heading"><h2>즐겨찾는 경로</h2><button data-nav="profile">편집</button></div>
+        <div class="favorite-list">${favorites || `<div class="card empty">아직 저장한 경로가 없어요.<br>마이페이지에서 자주 가는 경로를 추가해 보세요.</div>`}</div>
+        <div class="section-heading"><h2>최근 이용</h2><button data-nav="bookings">전체보기</button></div>
+        <div class="favorite-list">${recent.map(item => `<button class="favorite" data-nav="bookings"><span><strong>${serviceIcon(item.type)} ${escapeHtml(item.from)} <span class="arrow">→</span> ${escapeHtml(item.to)}</strong><small>${escapeHtml(formatDate(item.date))} · ${escapeHtml(item.time || "호출 기록")} · ${escapeHtml(serviceName(item.type))}</small></span><span class="arrow">›</span></button>`).join("") || `<div class="card empty">아직 이용 기록이 없습니다.</div>`}</div>
+        <div class="notice">이 앱은 예약과 호출 흐름을 체험하는 프로토타입입니다. 실제 운행 정보, 좌석 재고, 예약, 택시 호출 또는 결제와 연결되어 있지 않습니다.</div>`;
+    }
+    function renderSearch() {
+      if (state.stage === "form") {
+        $("#searchPage").innerHTML = `<div class="back-row"><button class="back" data-nav="home" aria-label="홈으로">←</button><div><h1>${serviceIcon(state.draft.type)} ${serviceName(state.draft.type)} 예약</h1><p>출발지와 도착지를 선택해 주세요.</p></div></div>${searchForm(state.draft.type)}`;
+        return;
+      }
+      if (state.stage === "results") {
+        const cards = state.results.map(item => `<button class="result-card" data-action="choose-schedule" data-index="${item.index}">
+          <div class="result-top"><strong>${escapeHtml(item.name)}</strong><span class="badge">${escapeHtml(item.badge)}</span></div>
+          <div class="route-times"><div><strong>${escapeHtml(item.depart)}</strong><small>${escapeHtml(state.draft.from)}</small></div><div class="route-line">──── ${escapeHtml(item.duration)} ────</div><div><strong>${escapeHtml(item.arrive)}</strong><small>${escapeHtml(state.draft.to)}</small></div></div>
+          <div class="result-bottom"><span>${state.draft.type === "train" ? "일반실부터" : "잔여 좌석 시연"}</span><strong>${won(item.fare)} <span class="small muted">/ 1인~</span></strong></div>
+        </button>`).join("");
+        $("#searchPage").innerHTML = `<div class="back-row"><button class="back" data-action="edit-search" aria-label="검색 조건 수정">←</button><div><h1>${state.draft.type === "train" ? "열차" : "버스"} 선택</h1><p>${escapeHtml(formatDate(state.draft.date))} · ${state.draft.passengers}명</p></div></div>
+          <div class="summary-route"><div><strong>${escapeHtml(state.draft.from)}</strong><small>${escapeHtml(formatDate(state.draft.date))}</small></div><span>→</span><div style="text-align:right"><strong>${escapeHtml(state.draft.to)}</strong><small>${escapeHtml(serviceName(state.draft.type))} 운행편</small></div></div>
+          <div class="section-heading"><h2>출발 시간 선택</h2><span class="small muted">${state.results.length}개 운행편</span></div>
+          <div class="result-list">${cards || `<div class="card empty">검색 결과가 없습니다.</div>`}</div>
+          <p class="demo-caption">표시된 시간과 요금은 가상 예시이며 실제 운행 정보가 아닙니다.</p>`;
+        return;
+      }
+      if (state.stage === "seats") {
+        const schedule = state.schedule;
+        const classNames = state.draft.type === "bus" ? [{ id: "bus", name: schedule.badge }] : [{ id: "standard", name: "일반실" }, ...(schedule.premium ? [{ id: "premium", name: "특실" }] : [])];
+        const seatType = state.draft.type === "bus" ? "bus" : state.seatClass;
+        const price = state.draft.type === "bus" ? schedule.fare : state.seatClass === "premium" ? schedule.premium : schedule.fare;
+        const classLabel = state.draft.type === "bus" ? schedule.badge : state.seatClass === "premium" ? "특실" : "일반실";
+        const scheduleLabel = `${schedule.name} · ${classLabel}`;
+        const occupied = new Set([
+          ...bookedSeats[seatType],
+          ...state.bookings.filter(item => item.status !== "cancelled" && item.type === state.draft.type && item.from === state.draft.from && item.to === state.draft.to && item.date === state.draft.date && item.schedule === scheduleLabel).flatMap(item => item.seats)
+        ]);
+        const seats = Array.from({ length: 8 }, (_, row) => ["A", "B", "C", "D"].map((letter, column) => {
+          const number = `${row + 1}${letter}`;
+          const unavailable = occupied.has(number);
+          const selected = state.seats.includes(number);
+          const cell = `<button class="seat${unavailable ? " booked" : ""}${selected ? " selected" : ""}" type="button" data-action="toggle-seat" data-seat="${number}" ${unavailable ? "disabled aria-label=\"" + number + " 예약된 좌석\"" : "aria-pressed=\"" + selected + "\" aria-label=\"" + number + " 좌석 선택\""}>${number}</button>`;
+          return column === 2 ? `<span class="aisle" aria-hidden="true"></span>${cell}` : cell;
+        }).join("")).join("");
+        const selectedPrice = price * state.seats.length;
+        $("#searchPage").innerHTML = `<div class="back-row"><button class="back" data-action="edit-results" aria-label="운행편 목록">←</button><div><h1>좌석 선택</h1><p>${escapeHtml(schedule.name)} · ${escapeHtml(schedule.depart)} 출발</p></div></div>
+          <div class="summary-route"><div><strong>${escapeHtml(state.draft.from)}</strong><small>${escapeHtml(schedule.depart)} 출발</small></div><span>→</span><div style="text-align:right"><strong>${escapeHtml(state.draft.to)}</strong><small>${escapeHtml(schedule.arrive)} 도착 · ${escapeHtml(schedule.duration)}</small></div></div>
+          ${classNames.length > 1 ? `<div class="class-switch">${classNames.map(item => `<button class="class-option${state.seatClass === item.id ? " active" : ""}" data-action="seat-class" data-class="${item.id}">${item.name}${item.id === "premium" ? ` · ${won(item.price || schedule.premium)}` : ""}</button>`).join("")}</div>` : `<p class="demo-caption">좌석 등급 · ${escapeHtml(schedule.badge)}</p>`}
+          <div class="section-heading"><h2>원하는 좌석을 눌러주세요</h2><span class="small muted">총 32석</span></div>
+          <p class="demo-caption">파란 좌석을 다시 누르면 취소할 수 있어요. 회색 좌석은 선택할 수 없습니다. 인원수만큼 선택해 주세요.</p>
+          <div class="seat-card"><div class="seat-front">🚆 앞쪽</div><div class="seat-grid">${seats}</div><div class="seat-legend"><span><i class="legend-box"></i> 선택 가능</span><span><i class="legend-box chosen"></i> 선택함</span><span><i class="legend-box unavailable"></i> 선택 불가</span></div></div>
+          <div class="selection-row"><span>선택 좌석 <strong>${state.seats.length ? escapeHtml(state.seats.join(", ")) : "없음"}</strong></span><span>${state.seats.length} / ${state.draft.passengers}명</span></div>
+          <div class="card" style="margin-top:12px"><div class="fare-row"><span>1인 운임 · ${escapeHtml(state.draft.type === "train" ? state.seatClass === "premium" ? "특실" : "일반실" : schedule.badge)}</span><strong>${won(price)}</strong></div><div class="fare-row total"><span>선택 금액</span><strong>${won(selectedPrice)}</strong></div></div>
+          <button class="primary wide" data-action="review-reservation" ${state.seats.length !== state.draft.passengers ? "disabled" : ""}>예약 정보 확인</button>
+          <p class="demo-caption">좌석 상태는 브라우저 안에서만 보여주는 시연 데이터입니다.</p>`;
+        return;
+      }
+      if (state.stage === "confirm") {
+        const schedule = state.schedule;
+        const unit = state.draft.type === "bus" ? schedule.fare : state.seatClass === "premium" ? schedule.premium : schedule.fare;
+        $("#searchPage").innerHTML = `<div class="back-row"><button class="back" data-action="edit-seats" aria-label="좌석 선택">←</button><div><h1>예약 정보 확인</h1><p>내용을 확인하고 가상 예약을 진행해 주세요.</p></div></div>
+          <div class="card"><div class="summary-route"><div><strong>${escapeHtml(state.draft.from)}</strong><small>${escapeHtml(formatDate(state.draft.date))} · ${escapeHtml(schedule.depart)}</small></div><span>→</span><div style="text-align:right"><strong>${escapeHtml(state.draft.to)}</strong><small>${escapeHtml(schedule.arrive)} 도착</small></div></div>
+          <div class="fare-row"><span>교통편</span><strong>${escapeHtml(schedule.name)} · ${escapeHtml(schedule.badge)}</strong></div><div class="fare-row"><span>좌석 등급 / 인원</span><strong>${state.draft.type === "bus" ? escapeHtml(schedule.badge) : state.seatClass === "premium" ? "특실" : "일반실"} · ${state.seats.length}명</strong></div><div class="fare-row"><span>선택 좌석</span><strong>${escapeHtml(state.seats.join(", "))}</strong></div><div class="fare-row total"><span>가상 운임 합계</span><strong>${won(unit * state.seats.length)}</strong></div></div>
+          <div class="notice">시연용 가상 예약입니다. 실제 좌석은 확보되지 않으며 운임이 결제되지 않습니다.</div>
+          <button class="primary wide" data-action="confirm-reservation">가상 예약 완료</button><button class="outline wide" data-action="edit-seats">좌석 다시 선택</button>`;
+      }
+      if (state.stage === "done") {
+        const item = state.lastBooking;
+        $("#searchPage").innerHTML = `<div class="back-row"><button class="back" data-nav="home" aria-label="홈으로">←</button><div><h1>예약 체험 완료</h1><p>이용 흐름이 정상적으로 완료되었습니다.</p></div></div>
+          <div class="card success-card"><div class="success-mark">✓</div><h2>가상 예약이 완료됐어요</h2><p class="muted">실제 예약·발권 또는 결제는 발생하지 않았습니다.</p><div class="ticket-code">${escapeHtml(item.id)}</div></div>
+          <div class="card" style="margin-top:12px"><div class="booking-route">${serviceIcon(item.type)} ${escapeHtml(item.from)} → ${escapeHtml(item.to)}</div><div class="booking-meta">${escapeHtml(formatDate(item.date))} · ${escapeHtml(item.time)}<br>${escapeHtml(item.schedule)} · 좌석 ${escapeHtml(item.seats.join(", "))}<br>${item.passengers}명 · ${won(item.total)}</div></div>
+          <button class="primary wide" data-nav="bookings">예약 내역 확인</button><button class="outline wide" data-nav="home">홈으로</button>`;
+      }
+    }
+    function renderTaxi() {
+      const taxi = state.taxi;
+      if (taxi.stage === "done" && taxi.booking) {
+        $("#taxiPage").innerHTML = `<div class="back-row"><button class="back" data-action="new-taxi" aria-label="새 호출">←</button><div><h1>호출 시뮬레이션 완료</h1><p>택시 이동 체험이 기록되었습니다.</p></div></div><div class="card success-card"><div class="success-mark">✓</div><h2>차량을 요청했어요</h2><p class="muted">실제 차량이 호출되거나 요금이 결제되지 않았습니다.</p><div class="ticket-code">${escapeHtml(taxi.booking.id)}</div></div><div class="card" style="margin-top:12px"><div class="booking-route">🚕 ${escapeHtml(taxi.booking.from)} → ${escapeHtml(taxi.booking.to)}</div><div class="booking-meta">${escapeHtml(taxi.booking.vehicleName)} · 예상 ${taxi.booking.duration}분<br>가상 예상 요금 ${won(taxi.booking.total)}</div></div><button class="primary wide" data-nav="bookings">이용 기록 확인</button><button class="outline wide" data-nav="home">홈으로</button>`;
+        return;
+      }
+      const quote = taxiQuote(taxi.from, taxi.to, taxi.vehicle);
+      const vehicles = [{ id: "standard", icon: "🚕", name: "일반택시", desc: "편안한 기본 이동" }, { id: "premium", icon: "🚖", name: "모범택시", desc: "여유로운 프리미엄" }];
+      $("#taxiPage").innerHTML = `<div class="back-row"><button class="back" data-nav="home" aria-label="홈으로">←</button><div><h1>택시 호출</h1><p>목적지를 입력하고 예상 요금을 확인해요.</p></div></div>
+        <div class="taxi-map" aria-label="경로 미리보기"><span class="map-pin">📍</span><span class="map-pin end">🏁</span><span class="map-label">가상 경로 안내</span></div>
+        <div class="card"><div class="field"><label for="taxiFrom">출발지</label><input id="taxiFrom" list="stationOptions" value="${escapeHtml(taxi.from)}" placeholder="출발지를 입력해 주세요"></div><button class="location-button wide" data-action="nearby-taxi">⌖ 현재 위치 사용</button><div class="field"><label for="taxiTo">도착지</label><input id="taxiTo" list="stationOptions" value="${escapeHtml(taxi.to)}" placeholder="목적지를 검색해 주세요"></div></div>
+        <div class="section-heading"><h2>차량 유형</h2></div><div class="vehicle-grid">${vehicles.map(item => `<button class="vehicle${taxi.vehicle === item.id ? " active" : ""}" data-action="taxi-vehicle" data-vehicle="${item.id}"><span class="vehicle-icon">${item.icon}</span><strong>${item.name}</strong><small>${item.desc}</small></button>`).join("")}</div>
+        <div class="quote" id="taxiQuote"><span>예상 이동 ${quote.duration}분</span><strong>약 ${won(quote.fare)}</strong></div><p class="demo-caption">출발지와 도착지를 입력하면 예상 정보가 자동으로 바뀌어요.</p>
+        <button class="primary wide" id="taxiCallButton" data-action="call-taxi" ${!taxi.from.trim() || !taxi.to.trim() ? "disabled" : ""}>가상 호출하기</button>
+        <p class="demo-caption">거리, 시간, 요금은 입력한 장소에 따라 계산되는 임의의 시연 값입니다. 지도·차량 호출 API와 연결되어 있지 않습니다.</p>`;
+    }
+    function taxiQuote(from, to, vehicle) {
+      const text = `${from}${to}`;
+      const seed = Array.from(text).reduce((sum, char) => sum + char.codePointAt(0), 0);
+      const km = 5 + seed % 24;
+      const fare = (4800 + km * 950 + (vehicle === "premium" ? 6000 : 0));
+      return { duration: Math.round(km * 2.8 + 5), fare: Math.round(fare / 100) * 100 };
+    }
+    function renderBookings() {
+      const items = [...state.bookings].reverse();
+      $("#bookingsPage").innerHTML = `<div class="back-row"><div><h1>예약 내역</h1><p>기차·버스 예약과 택시 호출 기록</p></div></div>
+        ${items.length ? `<div class="booking-list">${items.map((item, index) => `<article class="booking-card${item.status === "cancelled" ? " cancelled" : ""}"><div class="booking-head"><strong>${serviceIcon(item.type)} ${escapeHtml(serviceName(item.type))} ${item.type === "taxi" ? "호출" : "예약"}</strong><span class="status${item.status === "cancelled" ? " cancelled" : ""}">${item.status === "cancelled" ? "취소됨 · 시뮬레이션" : "가상 예약"}</span></div>
+          <div class="booking-route">${escapeHtml(item.from)} <span class="arrow">→</span> ${escapeHtml(item.to)}</div>
+          <div class="booking-meta">${escapeHtml(formatDate(item.date))} · ${escapeHtml(item.time || "호출 기록")}<br>${escapeHtml(item.schedule || item.vehicleName || "택시 호출")} · ${item.passengers || 1}명${item.seats && item.seats.length ? ` · 좌석 ${escapeHtml(item.seats.join(", "))}` : ""}<br>${won(item.total)} · ${escapeHtml(item.id)}</div>
+          ${item.status !== "cancelled" ? `<div class="booking-actions"><button class="danger" data-action="cancel-booking" data-index="${state.bookings.length - 1 - index}">가상 예약 취소</button></div>` : ""}</article>`).join("")}</div>` : `<div class="card empty">아직 예약 내역이 없어요.<br>기차나 버스 좌석을 골라 예약 체험을 시작해 보세요.<br><button class="primary" style="margin-top:15px" data-nav="train">기차 검색</button></div>`}
+        <div class="notice">내역은 이 브라우저에만 저장되는 시연 데이터입니다. 취소해도 실제 예약에는 영향이 없습니다.</div>`;
+    }
+    function renderProfile() {
+      const active = state.bookings.filter(item => item.status !== "cancelled");
+      const routes = ["train", "bus", "taxi"].map(type => active.filter(item => item.type === type).length);
+      const favoriteRows = state.favorites.map((item, index) => `<div class="favorite"><span><strong>${escapeHtml(item.from)} <span class="arrow">→</span> ${escapeHtml(item.to)}</strong><small>${escapeHtml(serviceName(item.type))} · 즐겨찾는 경로</small></span><button class="danger" style="min-height:34px;padding:0 10px;border-radius:9px;font-size:10px" data-action="remove-favorite" data-index="${index}">삭제</button></div>`).join("");
+      $("#profilePage").innerHTML = `<div class="back-row"><div><h1>마이페이지</h1><p>내 이동 기록과 즐겨찾는 경로를 관리해요.</p></div></div>
+        <div class="profile-card"><div class="avatar">🙂</div><div><strong>${escapeHtml(state.profile.name)}</strong><small>SMART RESERVE 이용자</small></div></div>
+        <div class="section-heading"><h2>이용 통계</h2></div><div class="stats-grid"><div class="stat"><strong>${routes[0]}</strong><small>기차 예약</small></div><div class="stat"><strong>${routes[1]}</strong><small>버스 예약</small></div><div class="stat"><strong>${routes[2]}</strong><small>택시 호출</small></div></div>
+        <div class="section-heading"><h2>프로필</h2></div><div class="card"><div class="field"><label for="profileName">표시 이름</label><input id="profileName" maxlength="24" value="${escapeHtml(state.profile.name)}" placeholder="이름을 입력해 주세요"></div><button class="secondary wide" style="margin-top:4px" data-action="save-profile">이름 저장</button></div>
+        <div class="section-heading"><h2>즐겨찾는 경로</h2></div><div class="favorite-list">${favoriteRows || `<div class="card empty">저장된 경로가 없습니다.</div>`}</div>
+        <div class="section-heading"><h2>경로 추가</h2></div><div class="card favorite-form"><div class="field"><label for="favoriteType">이동 수단</label><select id="favoriteType"><option value="train">기차</option><option value="bus">버스</option></select></div><div class="field"><label for="favoriteFrom">출발지</label><input id="favoriteFrom" list="stationOptions" placeholder="출발역 또는 터미널"></div><div class="field"><label for="favoriteTo">도착지</label><input id="favoriteTo" list="stationOptions" placeholder="도착역 또는 터미널"></div><button class="primary" data-action="add-favorite">즐겨찾기에 추가</button></div>
+        <div class="notice">프로필, 즐겨찾기 및 시연 내역은 브라우저의 로컬 저장소에 보관됩니다. 다른 기기와 공유되지는 않습니다.</div>`;
+    }
+    function readSearchInputs(home) {
+      const from = $(`#${home ? "homeFrom" : "searchFrom"}`);
+      const to = $(`#${home ? "homeTo" : "searchTo"}`);
+      const date = $(`#${home ? "homeDate" : "searchDate"}`);
+      if (!from || !to || !date) return false;
+      state.draft.from = from.value.trim();
+      state.draft.to = to.value.trim();
+      state.draft.date = date.value;
+      if (!state.draft.from || !state.draft.to) { toast("출발지와 도착지를 모두 입력해 주세요."); return false; }
+      if (state.draft.from.toLocaleLowerCase() === state.draft.to.toLocaleLowerCase()) { toast("출발지와 도착지를 다르게 선택해 주세요."); return false; }
+      if (!state.draft.date || state.draft.date < localDate) { toast("오늘 이후 날짜를 선택해 주세요."); return false; }
+      return true;
+    }
+    function performSearch(home) {
+      if (!readSearchInputs(home)) return;
+      const source = state.draft.type === "train" ? trainSchedules : busSchedules;
+      const offset = (state.draft.from.length + state.draft.to.length) % source.length;
+      state.results = source.map((_, index) => source[(index + offset) % source.length]).map((item, index) => ({ ...item, index }));
+      state.stage = "results";
+      if (home) showPage("search"); else renderSearch();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    function selectSchedule(index) {
+      const schedule = state.results.find(item => item.index === Number(index));
+      if (!schedule) { toast("운행편 정보를 찾지 못했습니다. 다시 검색해 주세요."); return; }
+      state.schedule = schedule;
+      state.seatClass = "standard";
+      state.seats = [];
+      state.stage = "seats";
+      renderSearch();
+    }
+    function toggleSeat(number) {
+      const type = state.draft.type === "bus" ? "bus" : state.seatClass;
+      if (bookedSeats[type].includes(number)) return;
+      if (state.seats.includes(number)) state.seats = state.seats.filter(seat => seat !== number);
+      else if (state.seats.length >= state.draft.passengers) toast(`선택 인원 ${state.draft.passengers}명에 맞춰 좌석을 선택해 주세요.`);
+      else state.seats = [...state.seats, number];
+      renderSearch();
+    }
+    function bookingRecord(type, from, to, date, time, schedule, seats, passengers, total, vehicleName = "") {
+      return { id: `SR-${Date.now().toString(36).toUpperCase()}`, type, from, to, date, time, schedule, seats, passengers, total, vehicleName, status: "confirmed", createdAt: new Date().toISOString() };
+    }
+    function completeReservation() {
+      if (!state.schedule || state.seats.length !== state.draft.passengers) { toast("인원수만큼 좌석을 먼저 선택해 주세요."); return; }
+      const unit = state.draft.type === "bus" ? state.schedule.fare : state.seatClass === "premium" ? state.schedule.premium : state.schedule.fare;
+      const record = bookingRecord(state.draft.type, state.draft.from, state.draft.to, state.draft.date, state.schedule.depart, `${state.schedule.name} · ${state.draft.type === "train" ? state.seatClass === "premium" ? "특실" : "일반실" : state.schedule.badge}`, [...state.seats], state.draft.passengers, unit * state.seats.length);
+      state.bookings.push(record);
+      state.lastBooking = record;
+      state.stage = "done";
+      persist();
+      renderSearch();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    function startSearch(type) {
+      state.draft.type = type;
+      state.stage = "form";
+      state.seats = [];
+      showPage("search");
+    }
+    function adjustPassengers(delta) {
+      state.draft.passengers = Math.max(1, Math.min(4, state.draft.passengers + delta));
+      if (state.seats.length > state.draft.passengers) state.seats = state.seats.slice(0, state.draft.passengers);
+      if (state.page === "home") renderHome(); else renderSearch();
+    }
+    function useNearby() {
+      const input = $("#homeFrom");
+      if (input) input.value = "서울역";
+      state.draft.from = "서울역";
+      toast("시연을 위해 서울역을 출발지로 설정했어요.");
+    }
+    function useFavorite(index) {
+      const route = state.favorites[Number(index)];
+      if (!route) return;
+      state.draft = { ...state.draft, type: route.type, from: route.from, to: route.to, date: localDate };
+      startSearch(route.type);
+    }
+    function callTaxi() {
+      const from = $("#taxiFrom").value.trim();
+      const to = $("#taxiTo").value.trim();
+      if (!from || !to) { toast("출발지와 도착지를 입력해 주세요."); return; }
+      if (from === to) { toast("출발지와 도착지를 다르게 입력해 주세요."); return; }
+      state.taxi.from = from;
+      state.taxi.to = to;
+      const quote = taxiQuote(from, to, state.taxi.vehicle);
+      const vehicleName = state.taxi.vehicle === "premium" ? "모범택시" : "일반택시";
+      const record = bookingRecord("taxi", from, to, localDate, "호출 시뮬레이션", "택시 이동", [], 1, quote.fare, vehicleName);
+      record.duration = quote.duration;
+      state.bookings.push(record);
+      state.taxi.booking = record;
+      state.taxi.stage = "done";
+      persist();
+      renderTaxi();
+    }
+    function handleAction(button) {
+      const action = button.dataset.action;
+      if (action === "swap-route") {
+        const prefix = button.dataset.home === "true" ? "home" : "search";
+        const from = $(`#${prefix}From`);
+        const to = $(`#${prefix}To`);
+        [from.value, to.value] = [to.value, from.value];
+        [state.draft.from, state.draft.to] = [to.value, from.value];
+      } else if (action === "passenger") {
+        adjustPassengers(Number(button.dataset.delta));
+      } else if (action === "search-routes") {
+        state.draft.type = button.dataset.type;
+        performSearch(button.dataset.home === "true");
+      } else if (action === "nearby") {
+        useNearby();
+      } else if (action === "nearby-taxi") {
+        state.taxi.from = "서울역";
+        renderTaxi();
+        toast("시연을 위해 서울역을 출발지로 설정했어요.");
+      } else if (action === "use-favorite") {
+        useFavorite(button.dataset.index);
+      } else if (action === "edit-search") {
+        state.stage = "form";
+        renderSearch();
+      } else if (action === "choose-schedule") {
+        selectSchedule(button.dataset.index);
+      } else if (action === "edit-results") {
+        state.stage = "results";
+        renderSearch();
+      } else if (action === "seat-class") {
+        if (state.seatClass !== button.dataset.class) {
+          state.seatClass = button.dataset.class;
+          state.seats = [];
+          renderSearch();
+        }
+      } else if (action === "toggle-seat") {
+        toggleSeat(button.dataset.seat);
+      } else if (action === "review-reservation") {
+        if (state.seats.length !== state.draft.passengers) { toast("인원수만큼 좌석을 선택해 주세요."); return; }
+        state.stage = "confirm";
+        renderSearch();
+      } else if (action === "edit-seats") {
+        state.stage = "seats";
+        renderSearch();
+      } else if (action === "confirm-reservation") {
+        completeReservation();
+      } else if (action === "taxi-vehicle") {
+        state.taxi.vehicle = button.dataset.vehicle;
+        state.taxi.from = $("#taxiFrom")?.value.trim() || state.taxi.from;
+        state.taxi.to = $("#taxiTo")?.value.trim() || state.taxi.to;
+        renderTaxi();
+      } else if (action === "call-taxi") {
+        callTaxi();
+      } else if (action === "new-taxi") {
+        state.taxi.stage = "form";
+        state.taxi.booking = null;
+        renderTaxi();
+      } else if (action === "cancel-booking") {
+        const item = state.bookings[Number(button.dataset.index)];
+        if (!item || item.status === "cancelled") return;
+        item.status = "cancelled";
+        persist();
+        render();
+        toast("가상 예약을 취소했습니다.");
+      } else if (action === "save-profile") {
+        const name = $("#profileName").value.trim();
+        if (!name) { toast("이름을 입력해 주세요."); return; }
+        state.profile.name = name;
+        persist();
+        render();
+        toast("프로필을 저장했습니다.");
+      } else if (action === "add-favorite") {
+        const from = $("#favoriteFrom").value.trim();
+        const to = $("#favoriteTo").value.trim();
+        const type = $("#favoriteType").value;
+        if (!from || !to) { toast("출발지와 도착지를 입력해 주세요."); return; }
+        if (from === to) { toast("출발지와 도착지를 다르게 입력해 주세요."); return; }
+        if (state.favorites.some(route => route.from === from && route.to === to && route.type === type)) { toast("이미 즐겨찾기에 등록된 경로입니다."); return; }
+        state.favorites.push({ from, to, type });
+        persist();
+        renderProfile();
+        toast("즐겨찾는 경로를 추가했습니다.");
+      } else if (action === "remove-favorite") {
+        state.favorites.splice(Number(button.dataset.index), 1);
+        persist();
+        renderProfile();
+        toast("즐겨찾기를 삭제했습니다.");
+      }
+    }
+    document.addEventListener("click", event => {
+      const button = event.target.closest("button");
+      if (!button) return;
+      if (button.dataset.nav) {
+        const destination = button.dataset.nav;
+        if (destination === "train" || destination === "bus") startSearch(destination);
+        else if (destination === "taxi") {
+          state.taxi.stage = "form";
+          showPage("taxi");
+        } else showPage(destination);
+        return;
+      }
+      if (button.dataset.action) handleAction(button);
+    });
+    document.addEventListener("input", event => {
+      if (event.target.id === "taxiFrom" || event.target.id === "taxiTo") {
+        state.taxi[event.target.id === "taxiFrom" ? "from" : "to"] = event.target.value;
+        const quoteElement = $("#taxiQuote");
+        const button = $("#taxiCallButton");
+        if (quoteElement) {
+          const quote = taxiQuote(state.taxi.from, state.taxi.to, state.taxi.vehicle);
+          quoteElement.innerHTML = `<span>예상 이동 ${quote.duration}분</span><strong>약 ${won(quote.fare)}</strong>`;
+        }
+        if (button) button.disabled = !state.taxi.from.trim() || !state.taxi.to.trim();
+      }
+      if (event.target.id === "homeFrom" || event.target.id === "searchFrom") state.draft.from = event.target.value;
+      if (event.target.id === "homeTo" || event.target.id === "searchTo") state.draft.to = event.target.value;
+      if (event.target.id === "homeDate" || event.target.id === "searchDate") state.draft.date = event.target.value;
+    });
+    readStoredState();
+    $("#stationOptions").innerHTML = stations.map(item => `<option value="${escapeHtml(item)}"></option>`).join("");
+    render();
+  </script>
+</body>
+</html>

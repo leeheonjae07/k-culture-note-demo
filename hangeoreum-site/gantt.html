@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#7022a1">
+  <meta name="description" content="SMART RESERVE 교통 통합 앱의 12개월 예시 개발 간트 차트">
+  <title>SMART RESERVE | 프로젝트 간트 차트</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --purple: #7425a2;
+      --purple-dark: #611889;
+      --purple-mid: #a64dc2;
+      --purple-light: #ead9f0;
+      --green: #81c78c;
+      --ink: #31283a;
+      --muted: #766b7d;
+      --line: #ded8e1;
+      --paper: #fbf9fc;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-width: 320px; }
+    a { color: inherit; }
+    .page { width: min(100% - 32px, 1480px); margin: 24px auto 44px; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 16px; }
+    .back { display: inline-flex; min-height: 44px; align-items: center; gap: 8px; padding: 0 15px; border: 1px solid var(--line); border-radius: 12px; background: white; color: var(--purple-dark); text-decoration: none; font-size: 13px; font-weight: 800; }
+    .print { min-height: 44px; padding: 0 15px; border: 0; border-radius: 12px; background: var(--purple); color: white; font: inherit; font-size: 13px; font-weight: 800; cursor: pointer; }
+    .title { padding: 22px 24px; border-radius: 19px 19px 0 0; color: white; background: var(--purple); }
+    .title .eyebrow { color: #ead9f0; font-size: 11px; font-weight: 850; letter-spacing: 1.1px; }
+    h1 { margin: 7px 0 5px; font-size: clamp(22px, 3vw, 32px); letter-spacing: -.8px; }
+    .title p { margin: 0; color: #f0e2f5; font-size: 13px; line-height: 1.65; }
+    .stats { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; }
+    .stat { padding: 7px 10px; border: 1px solid rgb(255 255 255 / 28%); border-radius: 99px; background: rgb(255 255 255 / 11%); color: white; font-size: 11px; font-weight: 750; }
+    .chart-shell { overflow: auto; overscroll-behavior-x: contain; border: 1px solid var(--line); border-top: 0; background: white; box-shadow: 0 12px 30px rgb(52 31 62 / 7%); }
+    table { width: 100%; min-width: 1190px; table-layout: fixed; border-collapse: separate; border-spacing: 0; }
+    col.phase { width: 135px; }
+    col.task { width: 235px; }
+    col.month { width: 58px; }
+    col.duration { width: 105px; }
+    thead th { height: 39px; padding: 7px 5px; border-right: 1px solid rgb(255 255 255 / 22%); border-bottom: 1px solid var(--line); text-align: center; }
+    thead tr:first-child th { color: white; background: var(--purple-mid); font-size: 12px; font-weight: 850; }
+    thead tr:first-child th.corner, thead tr:first-child th.duration-head { background: var(--purple-dark); }
+    thead tr:nth-child(2) th { color: #49364f; background: var(--purple-light); font-size: 11px; font-weight: 800; }
+    thead tr:nth-child(2) th.duration-head { color: white; background: var(--purple-dark); }
+    tbody th, tbody td { height: 37px; border-right: 1px solid var(--line); border-bottom: 1px dashed #d8d3db; }
+    tbody th.phase { padding: 8px; color: white; background: var(--purple); text-align: center; font-size: 12px; font-weight: 850; line-height: 1.5; word-break: keep-all; }
+    tbody th.task { padding: 7px 12px; background: #f7f1f9; color: #443849; text-align: left; font-size: 11px; font-weight: 700; line-height: 1.35; }
+    tbody td.month-cell { padding: 0; background-image: linear-gradient(to right, transparent calc(100% - 1px), #e3dfe5 calc(100% - 1px)); }
+    tbody td.duration { padding: 0 9px; background: white; color: var(--muted); text-align: center; font-size: 10px; white-space: nowrap; }
+    tbody td.bar { position: relative; padding: 0 3px; background: white; }
+    .bar span { display: block; min-width: 18px; height: 17px; padding: 0 7px; overflow: hidden; border-radius: 99px; background: var(--green); color: #20452c; text-align: center; text-overflow: ellipsis; white-space: nowrap; font-size: 9px; font-weight: 750; line-height: 17px; }
+    tfoot th { height: 34px; padding: 8px 12px; color: white; background: var(--purple); text-align: left; font-size: 11px; }
+    tfoot td { color: white; background: var(--purple-mid); text-align: center; font-size: 11px; font-weight: 850; }
+    .legend { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-top: 16px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 15px; background: white; }
+    .legend-items { display: flex; flex-wrap: wrap; gap: 15px; }
+    .legend-item { display: inline-flex; align-items: center; gap: 7px; color: #52475a; font-size: 11px; font-weight: 750; }
+    .swatch { width: 24px; height: 13px; border-radius: 4px; background: var(--purple); }
+    .swatch.task { background: var(--purple-light); border: 1px solid #d6bddf; }
+    .swatch.progress { background: var(--green); }
+    .legend-note { color: var(--muted); font-size: 10px; line-height: 1.55; }
+    .note { margin: 12px 2px 0; color: var(--muted); font-size: 11px; line-height: 1.65; }
+    @media (max-width: 600px) {
+      .page { width: calc(100% - 20px); margin-top: 10px; }
+      .title { padding: 19px 16px; }
+      .chart-shell { border-radius: 0 0 12px 12px; }
+      table { min-width: 980px; }
+      col.phase { width: 90px; }
+      col.task { width: 185px; }
+      col.month { width: 52px; }
+      col.duration { width: 81px; }
+      thead { position: sticky; top: 0; z-index: 4; }
+      thead tr:first-child th.corner:first-child, tbody th.phase { position: sticky; left: 0; z-index: 3; }
+      thead tr:first-child th.corner:nth-child(2), tbody th.task { position: sticky; left: 90px; z-index: 2; }
+      tbody th.phase { background: var(--purple); }
+      tbody th.task { background: #f7f1f9; }
+      .legend { align-items: flex-start; }
+    }
+    @media print {
+      @page { size: landscape; margin: 10mm; }
+      body { background: white; }
+      .page { width: 100%; margin: 0; }
+      .topbar, .note { display: none; }
+      .title { padding: 12px 16px; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      .title p { font-size: 10px; }
+      .stats { margin-top: 8px; }
+      .chart-shell { overflow: visible; box-shadow: none; }
+      table { min-width: 0; }
+      col.phase { width: 100px; }
+      col.task { width: 180px; }
+      col.month { width: auto; }
+      col.duration { width: 75px; }
+      thead th, tbody th, tbody td, tfoot th, tfoot td, .bar span, .legend { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      tbody th, tbody td { height: 30px; }
+      .bar span { height: 14px; line-height: 14px; }
+      .legend { margin-top: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a class="back" href="index.html">← SMART RESERVE로</a>
+      <button class="print" type="button" onclick="window.print()">인쇄 · PDF 저장</button>
+    </div>
+    <header class="title">
+      <span class="eyebrow">SMART RESERVE · PROJECT ROADMAP</span>
+      <h1>교통 통합 예약 앱 개발 간트 차트</h1>
+      <p>사진의 단계별·월별 일정 구성을 바탕으로 작성한 12개월 예시 계획입니다.<br>실제 착수일이 정해지면 M1을 시작 월로 바꾸어 사용하세요.</p>
+      <div class="stats"><span class="stat">계획 기간 · 12개월</span><span class="stat">개발 단계 · 5개</span><span class="stat">주요 작업 · 22개</span></div>
+    </header>
+    <div class="chart-shell" role="region" aria-label="월별 개발 일정표" tabindex="0">
+      <table>
+        <colgroup><col class="phase"><col class="task">
+          <col class="month"><col class="month"><col class="month">
+          <col class="month"><col class="month"><col class="month">
+          <col class="month"><col class="month"><col class="month">
+          <col class="month"><col class="month"><col class="month">
+          <col class="duration">
+        </colgroup>
+        <thead>
+          <tr><th class="corner" rowspan="2" scope="col">단계</th><th class="corner" rowspan="2" scope="col">작업</th><th colspan="3" scope="colgroup">1분기</th><th colspan="3" scope="colgroup">2분기</th><th colspan="3" scope="colgroup">3분기</th><th colspan="3" scope="colgroup">4분기</th><th class="duration-head" rowspan="2" scope="col">기간</th></tr>
+          <tr><th scope="col">M1</th><th scope="col">M2</th><th scope="col">M3</th><th scope="col">M4</th><th scope="col">M5</th><th scope="col">M6</th><th scope="col">M7</th><th scope="col">M8</th><th scope="col">M9</th><th scope="col">M10</th><th scope="col">M11</th><th scope="col">M12</th><th class="duration-head">월</th></tr>
+        </thead>
+        <tbody>
+          <tr><th class="phase" scope="rowgroup" rowspan="3">프로젝트<br>준비</th><th class="task" scope="row">목표·범위 정의</th><td class="bar" colspan="1"><span>목표 설정</span></td><td class="month-cell" colspan="11"></td><td class="duration">1</td></tr>
+          <tr><th class="task" scope="row">킥오프·역할 분담</th><td class="month-cell" colspan="1"></td><td class="bar" colspan="1"><span>킥오프</span></td><td class="month-cell" colspan="10"></td><td class="duration">1</td></tr>
+          <tr><th class="task" scope="row">일정·위험 계획</th><td class="month-cell" colspan="1"></td><td class="bar" colspan="2"><span>계획 수립</span></td><td class="month-cell" colspan="9"></td><td class="duration">2</td></tr>
+          <tr><th class="phase" scope="rowgroup" rowspan="4">요구사항<br>분석</th><th class="task" scope="row">교통 서비스 사용자 조사</th><td class="month-cell" colspan="1"></td><td class="bar" colspan="2"><span>사용자 조사</span></td><td class="month-cell" colspan="9"></td><td class="duration">2</td></tr>
+          <tr><th class="task" scope="row">기차·버스·택시 요구 분석</th><td class="month-cell" colspan="2"></td><td class="bar" colspan="2"><span>요구 분석</span></td><td class="month-cell" colspan="8"></td><td class="duration">2</td></tr>
+          <tr><th class="task" scope="row">좌석·예약·취소 흐름 정의</th><td class="month-cell" colspan="3"></td><td class="bar" colspan="1"><span>흐름 정의</span></td><td class="month-cell" colspan="8"></td><td class="duration">1</td></tr>
+          <tr><th class="task" scope="row">요구사항 검토·확정</th><td class="month-cell" colspan="3"></td><td class="bar" colspan="1"><span>요구 검토</span></td><td class="month-cell" colspan="8"></td><td class="duration">1</td></tr>
+          <tr><th class="phase" scope="rowgroup" rowspan="5">서비스<br>설계</th><th class="task" scope="row">기술 구조·데이터 설계</th><td class="month-cell" colspan="3"></td><td class="bar" colspan="2"><span>구조·데이터</span></td><td class="month-cell" colspan="7"></td><td class="duration">2</td></tr>
+          <tr><th class="task" scope="row">기차·버스 좌석 배치 설계</th><td class="month-cell" colspan="4"></td><td class="bar" colspan="1"><span>좌석 설계</span></td><td class="month-cell" colspan="7"></td><td class="duration">1</td></tr>
+          <tr><th class="task" scope="row">예약·가상 결제 흐름 설계</th><td class="month-cell" colspan="4"></td><td class="bar" colspan="2"><span>예약·결제 흐름</span></td><td class="month-cell" colspan="6"></td><td class="duration">2</td></tr>
+          <tr><th class="task" scope="row">모바일 UI·접근성 설계</th><td class="month-cell" colspan="4"></td><td class="bar" colspan="2"><span>UI 설계</span></td><td class="month-cell" colspan="6"></td><td class="duration">2</td></tr>
+          <tr><th class="task" scope="row">화면 검토·프로토타입 평가</th><td class="month-cell" colspan="5"></td><td class="bar" colspan="1"><span>설계 검토</span></td><td class="month-cell" colspan="6"></td><td class="duration">1</td></tr>
+          <tr><th class="phase" scope="rowgroup" rowspan="6">통합 앱<br>개발</th><th class="task" scope="row">홈·공통 탐색·반응형 화면</th><td class="month-cell" colspan="5"></td><td class="bar" colspan="2"><span>홈·공통 UI</span></td><td class="month-cell" colspan="5"></td><td class="duration">2</td></tr>
+          <tr><th class="task" scope="row">기차 검색·좌석 예약</th><td class="month-cell" colspan="6"></td><td class="bar" colspan="2"><span>기차 서비스</span></td><td class="month-cell" colspan="4"></td><td class="duration">2</td></tr>
+          <tr><th class="task" scope="row">버스 시간표·좌석 예약</th><td class="month-cell" colspan="7"></td><td class="bar" colspan="2"><span>버스 서비스</span></td><td class="month-cell" colspan="3"></td><td class="duration">2</td></tr>
+          <tr><th class="task" scope="row">택시 호출·요금 시뮬레이션</th><td class="month-cell" colspan="8"></td><td class="bar" colspan="2"><span>택시 서비스</span></td><td class="month-cell" colspan="2"></td><td class="duration">2</td></tr>
+          <tr><th class="task" scope="row">예약 내역·취소·즐겨찾기</th><td class="month-cell" colspan="7"></td><td class="bar" colspan="3"><span>내역·즐겨찾기</span></td><td class="month-cell" colspan="2"></td><td class="duration">3</td></tr>
+          <tr><th class="task" scope="row">가상 결제·프로필·로컬 저장</th><td class="month-cell" colspan="8"></td><td class="bar" colspan="2"><span>결제·저장</span></td><td class="month-cell" colspan="2"></td><td class="duration">2</td></tr>
+          <tr><th class="phase" scope="rowgroup" rowspan="4">검증·출시<br>운영</th><th class="task" scope="row">기능·좌석·결제 흐름 테스트</th><td class="month-cell" colspan="9"></td><td class="bar" colspan="2"><span>통합 테스트</span></td><td class="month-cell" colspan="1"></td><td class="duration">2</td></tr>
+          <tr><th class="task" scope="row">모바일·접근성 사용성 검증</th><td class="month-cell" colspan="9"></td><td class="bar" colspan="2"><span>모바일 검증</span></td><td class="month-cell" colspan="1"></td><td class="duration">2</td></tr>
+          <tr><th class="task" scope="row">배포·사용 가이드 정리</th><td class="month-cell" colspan="10"></td><td class="bar" colspan="1"><span>배포 준비</span></td><td class="month-cell" colspan="1"></td><td class="duration">1</td></tr>
+          <tr><th class="task" scope="row">시범 운영·최종 개선</th><td class="month-cell" colspan="10"></td><td class="bar" colspan="2"><span>시범 운영</span></td><td class="duration">2</td></tr>
+        </tbody>
+        <tfoot><tr><th colspan="2">프로젝트 진행 기간</th><td colspan="12">프로젝트 시작 기준 12개월 예시 일정</td><td>12개월</td></tr></tfoot>
+      </table>
+    </div>
+    <div class="legend" aria-label="차트 범례">
+      <div class="legend-items"><span class="legend-item"><i class="swatch"></i>작업 단계</span><span class="legend-item"><i class="swatch task"></i>작업 항목</span><span class="legend-item"><i class="swatch progress"></i>예정 기간</span></div>
+      <span class="legend-note">M1은 프로젝트 착수 월입니다. 표를 좌우로 스크롤해 전체 일정을 확인하세요.</span>
+    </div>
+    <p class="note">이 차트는 제공된 이미지의 단계별 개발 일정 예시를 SMART RESERVE 프로젝트에 맞게 재구성한 계획안입니다. 실제 팀 규모·범위·착수일에 따라 기간과 작업 순서는 조정해야 합니다. 인쇄 버튼을 누르면 PDF로 저장할 수 있습니다.</p>
+  </main>
+</body>
+</html>
